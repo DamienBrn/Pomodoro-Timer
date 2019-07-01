@@ -36,7 +36,7 @@ export default class Timer extends React.Component{
                 </View>
 
                 <View style={styles.timer_value_container} >
-                    <Text style={styles.timer_value}>{this.displayTwoDigits(this.state.timerMinutesValue)} : {this.displayTwoDigits(this.state.timerSecondsValue)}</Text>
+                    <Text style={[styles.timer_value, this.setBorderColor()]}>{this.displayTwoDigits(this.state.timerMinutesValue)} : {this.displayTwoDigits(this.state.timerSecondsValue)}</Text>
                 </View>
             
                 <View style={styles.buttons_container}>
@@ -145,50 +145,76 @@ export default class Timer extends React.Component{
         })
     }
 
+    setCustomTimeValue(){
+        let regex = new RegExp('\\.|-');
 
-    valueIsOutOfRange(){
+        if(!regex.test(this.state.customTimeValue) && this.state.customTimeValue != null && !this.state.timerIsActive){
+            chosenTimeInMinutes = this.isValueOutOfRange()
+            this.setState({
+                timerMinutesValue : this.isValueOutOfRange(),
+            })
+        }
+        this.setState({customTimeValue : null})
+    }
+
+    isValueOutOfRange(){
         return this.state.customTimeValue > 59 ? 59 : this.state.customTimeValue
     }
-    
 
-    setCustomTimeValue(){
-        chosenTimeInMinutes = this.valueIsOutOfRange()
-        this.setState({
-            timerMinutesValue : this.valueIsOutOfRange(),
-            customTimeValue : null
-        })
+    setBorderColor(){
+        return (
+            !this.state.timerIsActive && this.state.timerMinutesValue !== chosenTimeInMinutes ? 
+            styles.timer_value_border_inactive : styles.timer_value_border_active
+        )
     }
-}
 
+}
 
 
 const styles = StyleSheet.create({
 
     container : {
         flex : 1,
-        justifyContent : 'space-around'
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        backgroundColor: '#1f1f1f',
     },
 
     timer_value_container : {
-        height : 250,
-        width:250,
+        flex: 10,
         justifyContent : 'center',
         alignItems : 'center',
-        borderRadius: 250/2,
-        borderWidth: 2,
-        borderColor: '#2b6cb3',
+        //backgroundColor : 'green'
     },
 
+
     timer_value : {
-        fontSize : 65,
-        color  : '#ffffff'
+        textAlign : 'center',
+        fontSize : 60,
+        color  : '#ffffff',
+        height : 250,
+        lineHeight : 240,
+        width : 250,
+        borderRadius : 250/2,
+        borderWidth : 4,
+    },
+
+    timer_value_border_active : {
+        borderColor : '#2b6cb3',
+    },
+
+
+    timer_value_border_inactive : {
+        borderColor : '#a32727',
     },
 
     buttons_container : {
-        flex : 7,
+        flex : 4,
         flexDirection : 'row',
         justifyContent : 'space-around',
         alignItems : 'center',
+        //backgroundColor : 'red',
+        width:'100%'
     },
 
     button_colors : {
@@ -199,8 +225,9 @@ const styles = StyleSheet.create({
     button_format : {
         textAlign : 'center',
         fontSize : 20,
-        padding : 10,
-        borderRadius : 5,
+        padding : 5,
+        width : 100,
+        borderRadius : 30,
     },
 
     disabled_button : {
@@ -212,6 +239,7 @@ const styles = StyleSheet.create({
         flexDirection : 'row',
         justifyContent : 'center',
         alignItems : 'flex-start',
+       // backgroundColor : 'yellow'
     },
 
     user_input : {
@@ -223,6 +251,4 @@ const styles = StyleSheet.create({
         borderRadius : 5,
     },
 
-    button_custom_user_input : {
-    }
 })
