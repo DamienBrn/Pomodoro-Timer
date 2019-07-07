@@ -11,32 +11,62 @@ export default class Timer extends React.Component{
 
                 <View style={[styles.buttons_container, styles.time_options_container]}>
                     <TouchableOpacity onPress={()=>this.changeChosenTime(timeOptions.firstOption)} disabled={this.state.timerIsActive}>
-                        <Text style={[styles.button_format, styles.button_colors, chosenFocusTimeInMinutes !== timeOptions.firstOption ? styles.disabled_button : null ]}>
-                            {timeOptions.firstOption} min
+                        <Text style={[styles.button_format, styles.button_colors, timeChosen.focus !== timeOptions.firstOption[0] ? styles.disabled_button : null ]}>
+                            {timeOptions.firstOption[0]}/{timeOptions.firstOption[1]} min
                         </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={()=>this.changeChosenTime(timeOptions.secondOption)} disabled={this.state.timerIsActive}>
-                        <Text style={[styles.button_format, styles.button_colors, chosenFocusTimeInMinutes !== timeOptions.secondOption ? styles.disabled_button : null ]}>
-                            {timeOptions.secondOption} min
+                        <Text style={[styles.button_format, styles.button_colors, timeChosen.focus !== timeOptions.secondOption[0] ? styles.disabled_button : null ]}>
+                            {timeOptions.secondOption[0]}/{timeOptions.secondOption[1]} min
                         </Text>
                     </TouchableOpacity>
                 </View>
 
-                <View style={styles.custom_user_input_container} >
-                    <TextInput style={styles.user_input} value={this.state.customTimeValue} 
-                    placeholder="custom time" 
-                    keyboardType='numeric' 
-                    maxLength={2} 
-                    onChangeText={(value)=> this.valueHasChanged(value)} 
-                    onSubmitEditing={()=>this.setCustomTimeValue()}
-                    onFocus={()=>this.placeholder = ''}
-                    />
-                    <Button style={styles.button_custom_user_input} title="Ok" onPress={()=>this.setCustomTimeValue()} />
+                <View style={styles.inputs_container} >
+                    <View>
+                        <View style={styles.flex_direction_row}>
+                            <TextInput style={styles.user_input} 
+                                value={this.state.customTimeValue['focus']} 
+                                placeholder="Focus time" 
+                                keyboardType='numeric' 
+                                maxLength={2} 
+                                onChangeText={(value)=> this.valueHasChanged(value, 'focus')} 
+                                onSubmitEditing={()=>this.setCustomTimeValue('focus')}
+                                onFocus={()=>this.placeholder = ''}
+                            />
+                            <Button style={styles.button_custom_user_input} title="Ok" onPress={()=>this.setCustomTimeValue('focus')} />
+                        </View>
+                        <View style={[styles.margin_top, styles.flex_direction_row, styles.chosen_time]}>
+                            <Text style={[styles.font_white, styles.big_bold_font]}>Focus :</Text> 
+                            <Text style={[styles.font_white, styles.big_bold_font, styles.width_number]}>{timeChosen.focus}</Text>
+                        </View>
+                    </View>
+
+                    <View>
+                        <View style={styles.flex_direction_row}>
+                            <TextInput style={styles.user_input} 
+                                value={this.state.customTimeValue['break']} 
+                                placeholder="Break time" 
+                                keyboardType='numeric' 
+                                maxLength={2} 
+                                onChangeText={(value)=> this.valueHasChanged(value, 'break')} 
+                                onSubmitEditing={()=>this.setCustomTimeValue('break')}
+                                onFocus={()=>this.placeholder = ''}
+                            />
+                            <Button style={styles.button_custom_user_input} title="Ok" onPress={()=>this.setCustomTimeValue('break')} />
+                        </View>
+                        <View style={[styles.margin_top, styles.flex_direction_row, styles.chosen_time]}>
+                            <Text style={[styles.font_white, styles.big_bold_font]}>Break :</Text> 
+                            <Text style={[styles.font_white, styles.big_bold_font, styles.width_number]}>{timeChosen.break}</Text>
+                        </View>
+                    </View>
+
                 </View>
 
+
                 <View style={[styles.timer_value_container, this.setBorderColor()]} >
-                    <Text style={styles.timer_value}>{this.displayTwoDigits(this.state.timer.minutes)} : {this.displayTwoDigits(this.state.timer.seconds)}</Text>
+                    <Text style={styles.timer_value}>{this.displayTwoDigits(this.state.timer[this.state.timerState].minutes)} : {this.displayTwoDigits(this.state.timer[this.state.timerState].seconds)}</Text>
                     <Text style={[styles.timer_message, this.setTimerMessageTextColor()]}>{this.setTimerMessage()}</Text>
                 </View>
             
@@ -45,8 +75,8 @@ export default class Timer extends React.Component{
                         <Text style={[styles.button_format , styles.button_colors, this.setActionLabel() === 'Pause' ? styles.pause_button : null ]} >{this.setActionLabel()}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity title="Reset" onPress={()=>this.resetTimer()} disabled={this.state.timerIsActive || this.state.timer.minutes === chosenFocusTimeInMinutes}>
-                        <Text style={[styles.button_format , styles.button_colors, this.state.timerIsActive || this.state.timer.minutes === chosenFocusTimeInMinutes ? styles.disabled_button : null ]} >Reset</Text>
+                    <TouchableOpacity title="Reset" onPress={()=>this.resetTimer()} disabled={this.state.timerIsActive || this.state.timer[this.state.timerState].minutes === timeChosen[this.state.timerState]}>
+                        <Text style={[styles.button_format , styles.button_colors, this.state.timerIsActive || this.state.timer[this.state.timerState].minutes === timeChosen[this.state.timerState] ? styles.disabled_button : null ]} >Reset</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -60,33 +90,56 @@ export default class Timer extends React.Component{
         coutDown = null,
 
         timeOptions = {
-            firstOption : 5,
-            secondOption : 25
+            firstOption : [5, 1],
+            secondOption : [25, 5]
         },
 
-        chosenFocusTimeInMinutes = timeOptions.firstOption,
-            
+        timeChosen = {
+            focus : timeOptions.firstOption[0],
+            break : timeOptions.firstOption[1]
+        }  
+
         this.state={
             timer : {
-                minutes : chosenFocusTimeInMinutes,
-                seconds : 0
+                focus:{
+                    minutes : timeChosen.focus,
+                    seconds : 0
+                },
+
+                break : {
+                    minutes : timeChosen.break,
+                    seconds : 0
+                }
             },
 
             timerIsActive : false,
-            customTimeValue : null,
-            timerState : 'focus'
+            timerState : 'focus',
+
+            customTimeValue: {
+                focus : null,
+                break :null
+            },
         }
     }
 
-    changeChosenTime(chosenTime){
+
+    changeChosenTime(chosenTimeCouple){
         this.setState({
             timer : {
                 ...this.state.timer,
-                minutes : chosenTime,
-                seconds : 0
+                focus : {
+                    minutes : chosenTimeCouple[0],
+                    seconds : 0
+                },
+                break : {
+                    minutes : chosenTimeCouple[1],
+                    seconds : 0
+                }
             }
         })
-        chosenFocusTimeInMinutes = chosenTime
+
+        timeChosen.focus = chosenTimeCouple[0]
+        timeChosen.break = chosenTimeCouple[1]
     }
 
 
@@ -94,8 +147,6 @@ export default class Timer extends React.Component{
         return (numberOfDigits < 10) ? ('0' + numberOfDigits) : numberOfDigits
     }
 
-
-    //--------
 
     startTimer(){
         if(!this.state.timerIsActive){
@@ -109,13 +160,17 @@ export default class Timer extends React.Component{
         clearInterval(coutDown)
     }
 
-    resetTimer(){
-        console.log('reset')
+    resetTimer(state = undefined){
+        if(state == undefined){
+            state = this.state.timerState
+        }
         this.setState({
             timer : {
                 ...this.state.timer,
-                minutes : chosenFocusTimeInMinutes,
-                seconds : 0
+                [state] : {
+                    minutes : timeChosen[state],
+                    seconds : 0
+                }
             },
         })
     }
@@ -123,13 +178,16 @@ export default class Timer extends React.Component{
     
 
     decrementTimer(){
+        let state = this.state.timerState
         coutDown = setInterval(()=>{
             this.setState((previousState)=>{
                 return {
                     timer : {
                         ...this.state.timer,
-                        minutes : this.decrementMinutes(previousState.timer.minutes, previousState.timer.seconds - 1),
-                        seconds : this.decrementSeconds(previousState.timer.seconds - 1),
+                        [state] : {
+                            minutes : this.decrementMinutes(previousState.timer[state].minutes, previousState.timer[state].seconds - 1),
+                            seconds : this.decrementSeconds(previousState.timer[state].seconds - 1),
+                        }
                     }
                 }
              })
@@ -150,7 +208,8 @@ export default class Timer extends React.Component{
 
 
     checkIfTimerHasEnded(coutDown){
-        if(this.state.timer.minutes === 0 && this.state.timer.seconds === 0){
+        let state = this.state.timerState
+        if(this.state.timer[state].minutes === 0 && this.state.timer[state].seconds === 0){
             clearInterval(coutDown)
             Vibrate()
             this.setState({
@@ -171,39 +230,42 @@ export default class Timer extends React.Component{
         }
     }
 
-    valueHasChanged(value){
+    valueHasChanged(value, state){
         this.setState({
-            customTimeValue : value
+            customTimeValue :
+            {
+                ...this.state.customTimeValue,
+                [state] : value
+            }
         })
     }
 
-    setCustomTimeValue(){
-        if(+this.state.customTimeValue
-                            && this.state.customTimeValue != null 
-                            && !this.state.timerIsActive 
-                            /*&& this.state.timer.minutes === chosenFocusTimeInMinutes*/){
-            this.resetTimer()
-            setTimeout(()=>{
-                chosenFocusTimeInMinutes = this.isValueOutOfRange()
-                this.setState({
-                    timer : {
-                        ...this.state.timer,
-                        minutes : this.isValueOutOfRange()
-                    },
-                    timerState : 'focus'
-                })
-            }, 0)
+    setCustomTimeValue(state){
+        if(+this.state.customTimeValue[state] && this.state.customTimeValue[state] != null && !this.state.timerIsActive){
+                    timeChosen[state] = this.isValueOutOfRange(state)
+                    this.resetTimer(state)
+                    this.setState({
+                        customTimeValue :
+                            {...this.state.customTimeValue,
+                                [state] : null,
+                            }
+                    })
+        }else{
+            this.setState({
+                customTimeValue :
+                    {...this.state.customTimeValue,
+                        [state] : null,
+                    }
+            })
         }
-        setTimeout(()=>{
-            this.setState({customTimeValue : null})
-        },2)
-        
+    }
+    
+
+    isValueOutOfRange(state){
+        return this.state.customTimeValue[state] > 59 ? 59 : this.state.customTimeValue[state]
     }
 
-    isValueOutOfRange(){
-        return this.state.customTimeValue > 59 ? 59 : this.state.customTimeValue
-    }
-
+    //*** 
 
     setBorderColor(){
         let borderColor
@@ -217,9 +279,10 @@ export default class Timer extends React.Component{
 
 
     setActionLabel(){
+        let state = this.state.timerState
         let actionLabel = 'Start'
 
-        if(!this.state.timerIsActive && this.state.timer.minutes !== chosenFocusTimeInMinutes || this.state.timerIsActive){
+        if(!this.state.timerIsActive && this.state.timer[state].minutes !== timeChosen[state] || this.state.timerIsActive){
             actionLabel = 'Resume'
         } 
         if(this.state.timerIsActive){
@@ -258,6 +321,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-around',
         backgroundColor: '#1f1f1f',
+    },
+
+    font_white :{
+        color : '#ffffff'
+    },
+
+    big_bold_font : {
+        fontSize : 20,
+        fontWeight : 'bold'
+    },
+
+    margin_top : {
+        marginTop : 15
     },
 
     timer_value_container : {
@@ -333,12 +409,17 @@ const styles = StyleSheet.create({
         backgroundColor : '#a32727',
     },
 
-    custom_user_input_container : {
+    inputs_container : {
         flex : 2,
         flexDirection : 'row',
-        justifyContent : 'center',
+        justifyContent : 'space-around',
         alignItems : 'flex-start',
+        width : '100%',
        // backgroundColor : 'yellow'
+    },
+
+    flex_direction_row : {
+        flexDirection : 'row'
     },
 
     user_input : {
@@ -346,8 +427,17 @@ const styles = StyleSheet.create({
         color : '#ffffff',
         padding : 10,
         height : 35,
-        width : 250,
+        width : 100,
         borderRadius : 5,
+    },
+
+    chosen_time : {
+        justifyContent : 'space-around'
+    },
+
+    width_number : {
+        width : 30,
+        textAlign : 'center'
     },
 
 })
