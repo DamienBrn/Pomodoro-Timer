@@ -37,7 +37,7 @@ export default class Timer extends React.Component{
 
                 <View style={[styles.timer_value_container, this.setBorderColor()]} >
                     <Text style={styles.timer_value}>{this.displayTwoDigits(this.state.timer.minutes)} : {this.displayTwoDigits(this.state.timer.seconds)}</Text>
-                    <Text style={styles.timer_message}>{this.setTimerMessage()}</Text>
+                    <Text style={[styles.timer_message, this.setTimerMessageTextColor()]}>{this.setTimerMessage()}</Text>
                 </View>
             
                 <View style={styles.buttons_container}>
@@ -70,7 +70,8 @@ export default class Timer extends React.Component{
                 seconds : 0
             },
             timerIsActive : false,
-            customTimeValue : null
+            customTimeValue : null,
+            timerState : 'focus'
         }
     }
 
@@ -104,15 +105,16 @@ export default class Timer extends React.Component{
     }
 
     resetTimer(){
+        console.log('reset')
         this.setState({
             timer : {
                 ...this.state.timer,
                 minutes : chosenTimeInMinutes,
                 seconds : 0
             },
-            actionLabel : 'Start'
         })
     }
+
 
     decrementTimer(){
         coutDown = setInterval(()=>{
@@ -145,6 +147,21 @@ export default class Timer extends React.Component{
         if(this.state.timer.minutes === 0 && this.state.timer.seconds === 0){
             clearInterval(coutDown)
             Vibrate()
+            this.setState({
+                timerIsActive : false
+            })
+            this.changeTimerState()
+            this.resetTimer()
+            this.startTimer()
+        }
+    }
+
+    changeTimerState(){
+        if(this.state.timerState === 'focus'){
+            this.setState({timerState : 'break'})
+        }
+        else{
+            this.setState({timerState : 'focus'})
         }
     }
 
@@ -163,17 +180,23 @@ export default class Timer extends React.Component{
         if(!regex.test(this.state.customTimeValue) 
                             && this.state.customTimeValue != null 
                             && !this.state.timerIsActive 
-                            && this.state.timer.minutes === chosenTimeInMinutes){
-
-            chosenTimeInMinutes = this.isValueOutOfRange()
-            this.setState({
-                timer : {
-                    ...this.state.timer,
-                    minutes : this.isValueOutOfRange()
-                }
-            })
+                            /*&& this.state.timer.minutes === chosenTimeInMinutes*/){
+            this.resetTimer()
+            setTimeout(()=>{
+                chosenTimeInMinutes = this.isValueOutOfRange()
+                this.setState({
+                    timer : {
+                        ...this.state.timer,
+                        minutes : this.isValueOutOfRange()
+                    },
+                    timerState : 'focus'
+                })
+            }, 0)
         }
-        this.setState({customTimeValue : null})
+        setTimeout(()=>{
+            this.setState({customTimeValue : null})
+        },2)
+        
     }
 
     isValueOutOfRange(){
@@ -182,10 +205,13 @@ export default class Timer extends React.Component{
 
 
     setBorderColor(){
-        return (
-            !this.state.timerIsActive && this.state.timer.minutes !== chosenTimeInMinutes ? 
-            styles.timer_value_border_inactive : styles.timer_value_border_active
-        )
+        let borderColor
+        if(!this.state.timerIsActive){
+            borderColor = styles.timer_value_border_pause
+        }else{
+            borderColor = styles['timer_value_border_' + this.state.timerState]
+        }
+        return  borderColor
     }
 
 
@@ -207,21 +233,21 @@ export default class Timer extends React.Component{
     }
 
     setTimerMessage(){
-        let timerMessage = '...'
+        let timerMessage = this.state.timerState.toUpperCase()
 
-        if(this.state.timerIsActive){
-            timerMessage = 'Focus'
-        }
-        if(this.state.timer.minutes === 0 && this.state.timer.seconds === 0){
-            timerMessage = 'Break'
+        if(!this.state.timerIsActive){
+            timerMessage = '...'
         }
 
-        return timerMessage
+        return timerMessage.toUpperCase()
     }
 
-    
+    setTimerMessageTextColor(){
+        return  styles['timer_message_' + this.state.timerState]
+    }
 
 }
+
 
 
 const styles = StyleSheet.create({
@@ -245,9 +271,16 @@ const styles = StyleSheet.create({
     },
 
     timer_message : {
-        fontSize : 34,
-        fontWeight : 'bold',
+        fontSize : 24,
         color : '#ffffff',
+    },
+    
+    timer_message_focus : {
+        color : '#a32727',
+    },
+
+    timer_message_break : {
+        color : '#41b31e'
     },
 
     timer_value : {
@@ -256,14 +289,18 @@ const styles = StyleSheet.create({
         color  : '#ffffff',
     },
 
-    timer_value_border_active : {
+    timer_value_border_pause : {
         borderColor : '#2b6cb3',
     },
 
-
-    timer_value_border_inactive : {
+    timer_value_border_focus : {
         borderColor : '#a32727',
     },
+
+    timer_value_border_break : {
+        borderColor : '#41b31e',
+    },
+
 
     buttons_container : {
         flex : 4,
