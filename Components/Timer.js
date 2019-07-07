@@ -11,13 +11,13 @@ export default class Timer extends React.Component{
 
                 <View style={[styles.buttons_container, styles.time_options_container]}>
                     <TouchableOpacity onPress={()=>this.changeChosenTime(timeOptions.firstOption)} disabled={this.state.timerIsActive}>
-                        <Text style={[styles.button_format, styles.button_colors, chosenTimeInMinutes !== timeOptions.firstOption ? styles.disabled_button : null ]}>
+                        <Text style={[styles.button_format, styles.button_colors, chosenFocusTimeInMinutes !== timeOptions.firstOption ? styles.disabled_button : null ]}>
                             {timeOptions.firstOption} min
                         </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={()=>this.changeChosenTime(timeOptions.secondOption)} disabled={this.state.timerIsActive}>
-                        <Text style={[styles.button_format, styles.button_colors, chosenTimeInMinutes !== timeOptions.secondOption ? styles.disabled_button : null ]}>
+                        <Text style={[styles.button_format, styles.button_colors, chosenFocusTimeInMinutes !== timeOptions.secondOption ? styles.disabled_button : null ]}>
                             {timeOptions.secondOption} min
                         </Text>
                     </TouchableOpacity>
@@ -45,8 +45,8 @@ export default class Timer extends React.Component{
                         <Text style={[styles.button_format , styles.button_colors, this.setActionLabel() === 'Pause' ? styles.pause_button : null ]} >{this.setActionLabel()}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity title="Reset" onPress={()=>this.resetTimer()} disabled={this.state.timerIsActive || this.state.timer.minutes === chosenTimeInMinutes}>
-                        <Text style={[styles.button_format , styles.button_colors, this.state.timerIsActive || this.state.timer.minutes === chosenTimeInMinutes ? styles.disabled_button : null ]} >Reset</Text>
+                    <TouchableOpacity title="Reset" onPress={()=>this.resetTimer()} disabled={this.state.timerIsActive || this.state.timer.minutes === chosenFocusTimeInMinutes}>
+                        <Text style={[styles.button_format , styles.button_colors, this.state.timerIsActive || this.state.timer.minutes === chosenFocusTimeInMinutes ? styles.disabled_button : null ]} >Reset</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -58,17 +58,20 @@ export default class Timer extends React.Component{
     constructor(props){
         super(props)
         coutDown = null,
+
         timeOptions = {
             firstOption : 5,
             secondOption : 25
-        }
-        chosenTimeInMinutes = timeOptions.firstOption,
+        },
 
+        chosenFocusTimeInMinutes = timeOptions.firstOption,
+            
         this.state={
             timer : {
-                minutes : chosenTimeInMinutes,
+                minutes : chosenFocusTimeInMinutes,
                 seconds : 0
             },
+
             timerIsActive : false,
             customTimeValue : null,
             timerState : 'focus'
@@ -83,7 +86,7 @@ export default class Timer extends React.Component{
                 seconds : 0
             }
         })
-        chosenTimeInMinutes = chosenTime
+        chosenFocusTimeInMinutes = chosenTime
     }
 
 
@@ -91,6 +94,8 @@ export default class Timer extends React.Component{
         return (numberOfDigits < 10) ? ('0' + numberOfDigits) : numberOfDigits
     }
 
+
+    //--------
 
     startTimer(){
         if(!this.state.timerIsActive){
@@ -109,12 +114,13 @@ export default class Timer extends React.Component{
         this.setState({
             timer : {
                 ...this.state.timer,
-                minutes : chosenTimeInMinutes,
+                minutes : chosenFocusTimeInMinutes,
                 seconds : 0
             },
         })
     }
 
+    
 
     decrementTimer(){
         coutDown = setInterval(()=>{
@@ -172,18 +178,13 @@ export default class Timer extends React.Component{
     }
 
     setCustomTimeValue(){
-        let regex = new RegExp('\\.|-');
-
-        console.log('current time : ' + this.state.timer.minutes)
-        console.log('chosenT time : ' + chosenTimeInMinutes)
-
-        if(!regex.test(this.state.customTimeValue) 
+        if(+this.state.customTimeValue
                             && this.state.customTimeValue != null 
                             && !this.state.timerIsActive 
-                            /*&& this.state.timer.minutes === chosenTimeInMinutes*/){
+                            /*&& this.state.timer.minutes === chosenFocusTimeInMinutes*/){
             this.resetTimer()
             setTimeout(()=>{
-                chosenTimeInMinutes = this.isValueOutOfRange()
+                chosenFocusTimeInMinutes = this.isValueOutOfRange()
                 this.setState({
                     timer : {
                         ...this.state.timer,
@@ -218,7 +219,7 @@ export default class Timer extends React.Component{
     setActionLabel(){
         let actionLabel = 'Start'
 
-        if(!this.state.timerIsActive && this.state.timer.minutes !== chosenTimeInMinutes || this.state.timerIsActive){
+        if(!this.state.timerIsActive && this.state.timer.minutes !== chosenFocusTimeInMinutes || this.state.timerIsActive){
             actionLabel = 'Resume'
         } 
         if(this.state.timerIsActive){
