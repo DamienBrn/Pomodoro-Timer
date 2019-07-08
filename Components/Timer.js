@@ -1,24 +1,25 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Picker, Button} from 'react-native'
+import {Text, View, TouchableOpacity, TextInput, Button} from 'react-native'
 import Vibrate from '../utils/vibrate'
+import {styles} from './Timer_styles'
 
 
 export default class Timer extends React.Component{
 
     render(){
         return(
-            <View style={styles.container}>
+            <View style={styles.main_container}>
 
                 <View style={[styles.buttons_container, styles.time_options_container]}>
-                    <TouchableOpacity onPress={()=>this.changeChosenTime(timeOptions.firstOption)} disabled={this.state.timerIsActive}>
-                        <Text style={[styles.button_format, styles.button_colors, timeChosen.focus !== timeOptions.firstOption[0] ? styles.disabled_button : null ]}>
-                            {timeOptions.firstOption[0]}/{timeOptions.firstOption[1]} min
+                    <TouchableOpacity onPress={()=>this.changeChosenTimeDefaultOptions(timeOptions.firstOption)} disabled={this.state.timerIsActive}>
+                        <Text style={[styles.button_format, styles.button_colors, chosenTime.focus !== timeOptions.firstOption.focus ? styles.disabled_button : null ]}>
+                            {timeOptions.firstOption.focus}/{timeOptions.firstOption.break} min
                         </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={()=>this.changeChosenTime(timeOptions.secondOption)} disabled={this.state.timerIsActive}>
-                        <Text style={[styles.button_format, styles.button_colors, timeChosen.focus !== timeOptions.secondOption[0] ? styles.disabled_button : null ]}>
-                            {timeOptions.secondOption[0]}/{timeOptions.secondOption[1]} min
+                    <TouchableOpacity onPress={()=>this.changeChosenTimeDefaultOptions(timeOptions.secondOption)} disabled={this.state.timerIsActive}>
+                        <Text style={[styles.button_format, styles.button_colors, chosenTime.focus !== timeOptions.secondOption.focus ? styles.disabled_button : null ]}>
+                            {timeOptions.secondOption.focus}/{timeOptions.secondOption.break} min
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -31,7 +32,7 @@ export default class Timer extends React.Component{
                                 placeholder="Focus time" 
                                 keyboardType='numeric' 
                                 maxLength={2} 
-                                onChangeText={(value)=> this.valueHasChanged(value, 'focus')} 
+                                onChangeText={(value)=> this.inputValueHasChanged(value, 'focus')} 
                                 onSubmitEditing={()=>this.setCustomTimeValue('focus')}
                                 onFocus={()=>this.placeholder = ''}
                             />
@@ -39,7 +40,7 @@ export default class Timer extends React.Component{
                         </View>
                         <View style={[styles.margin_top, styles.flex_direction_row, styles.chosen_time]}>
                             <Text style={[styles.font_white, styles.big_bold_font]}>Focus :</Text> 
-                            <Text style={[styles.font_white, styles.big_bold_font, styles.width_number]}>{timeChosen.focus}</Text>
+                            <Text style={[styles.font_white, styles.big_bold_font, styles.width_number]}>{chosenTime.focus}</Text>
                         </View>
                     </View>
 
@@ -50,7 +51,7 @@ export default class Timer extends React.Component{
                                 placeholder="Break time" 
                                 keyboardType='numeric' 
                                 maxLength={2} 
-                                onChangeText={(value)=> this.valueHasChanged(value, 'break')} 
+                                onChangeText={(value)=> this.inputValueHasChanged(value, 'break')} 
                                 onSubmitEditing={()=>this.setCustomTimeValue('break')}
                                 onFocus={()=>this.placeholder = ''}
                             />
@@ -58,16 +59,16 @@ export default class Timer extends React.Component{
                         </View>
                         <View style={[styles.margin_top, styles.flex_direction_row, styles.chosen_time]}>
                             <Text style={[styles.font_white, styles.big_bold_font]}>Break :</Text> 
-                            <Text style={[styles.font_white, styles.big_bold_font, styles.width_number]}>{timeChosen.break}</Text>
+                            <Text style={[styles.font_white, styles.big_bold_font, styles.width_number]}>{chosenTime.break}</Text>
                         </View>
                     </View>
 
                 </View>
 
 
-                <View style={[styles.timer_value_container, this.setBorderColor()]} >
+                <View style={[styles.timer_value_container, this.setTimerBorderColor()]} >
                     <Text style={styles.timer_value}>{this.displayTwoDigits(this.state.timer[this.state.timerState].minutes)} : {this.displayTwoDigits(this.state.timer[this.state.timerState].seconds)}</Text>
-                    <Text style={[styles.timer_message, this.setTimerMessageTextColor()]}>{this.setTimerMessage()}</Text>
+                    <Text style={[styles.timer_message, this.setTimerStateMessageTextColor()]}>{this.setTimerStateMessage()}</Text>
                 </View>
             
                 <View style={styles.buttons_container}>
@@ -75,8 +76,8 @@ export default class Timer extends React.Component{
                         <Text style={[styles.button_format , styles.button_colors, this.setActionLabel() === 'Pause' ? styles.pause_button : null ]} >{this.setActionLabel()}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity title="Reset" onPress={()=>this.resetTimer()} disabled={this.state.timerIsActive || this.state.timer[this.state.timerState].minutes === timeChosen[this.state.timerState]}>
-                        <Text style={[styles.button_format , styles.button_colors, this.state.timerIsActive || this.state.timer[this.state.timerState].minutes === timeChosen[this.state.timerState] ? styles.disabled_button : null ]} >Reset</Text>
+                    <TouchableOpacity title="Reset" onPress={()=>this.resetTimer()} disabled={this.state.timerIsActive || this.state.timer[this.state.timerState].minutes === chosenTime[this.state.timerState]}>
+                        <Text style={[styles.button_format , styles.button_colors, this.state.timerIsActive || this.state.timer[this.state.timerState].minutes === chosenTime[this.state.timerState] ? styles.disabled_button : null ]} >Reset</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -88,33 +89,33 @@ export default class Timer extends React.Component{
     constructor(props){
         super(props)
         coutDown = null,
-
         timeOptions = {
-            firstOption : [5, 1],
-            secondOption : [25, 5]
+            firstOption : {
+                focus : 5,
+                break : 1
+            },
+            secondOption : {
+                focus : 25,
+                break : 5
+            }
         },
-
-        timeChosen = {
-            focus : timeOptions.firstOption[0],
-            break : timeOptions.firstOption[1]
+        chosenTime = {
+            focus : timeOptions.firstOption.focus,
+            break : timeOptions.firstOption.break
         }  
-
         this.state={
             timer : {
                 focus:{
-                    minutes : timeChosen.focus,
+                    minutes : chosenTime.focus,
                     seconds : 0
                 },
-
                 break : {
-                    minutes : timeChosen.break,
+                    minutes : chosenTime.break,
                     seconds : 0
                 }
             },
-
             timerIsActive : false,
             timerState : 'focus',
-
             customTimeValue: {
                 focus : null,
                 break :null
@@ -123,114 +124,34 @@ export default class Timer extends React.Component{
     }
 
 
-    changeChosenTime(chosenTimeCouple){
+
+    changeChosenTimeDefaultOptions(chosenOption){
         this.setState({
             timer : {
                 ...this.state.timer,
                 focus : {
-                    minutes : chosenTimeCouple[0],
+                    minutes : chosenOption.focus,
                     seconds : 0
                 },
                 break : {
-                    minutes : chosenTimeCouple[1],
+                    minutes : chosenOption.break,
                     seconds : 0
                 }
             }
         })
 
-        timeChosen.focus = chosenTimeCouple[0]
-        timeChosen.break = chosenTimeCouple[1]
+        chosenTime.focus = chosenOption.focus
+        chosenTime.break = chosenOption.break
     }
-
 
     displayTwoDigits(numberOfDigits){
         return (numberOfDigits < 10) ? ('0' + numberOfDigits) : numberOfDigits
     }
 
 
-    startTimer(){
-        if(!this.state.timerIsActive){
-            this.setState({timerIsActive : true})
-            this.decrementTimer()
-        } 
-    }
 
-    pauseTimer(){
-        this.setState({timerIsActive : false})
-        clearInterval(coutDown)
-    }
-
-    resetTimer(state = undefined){
-        if(state == undefined){
-            state = this.state.timerState
-        }
-        this.setState({
-            timer : {
-                ...this.state.timer,
-                [state] : {
-                    minutes : timeChosen[state],
-                    seconds : 0
-                }
-            },
-        })
-    }
-
-    
-
-    decrementTimer(){
-        let state = this.state.timerState
-        coutDown = setInterval(()=>{
-            this.setState((previousState)=>{
-                return {
-                    timer : {
-                        ...this.state.timer,
-                        [state] : {
-                            minutes : this.decrementMinutes(previousState.timer[state].minutes, previousState.timer[state].seconds - 1),
-                            seconds : this.decrementSeconds(previousState.timer[state].seconds - 1),
-                        }
-                    }
-                }
-             })
-
-             this.checkIfTimerHasEnded(coutDown)
-
-        },1000)
-    }
-
-    
-    decrementSeconds(seconds){
-        return (seconds) === -1 ? 59 : seconds
-    }
-    
-    decrementMinutes(minutes, seconds){
-        return (seconds) === -1 ? minutes - 1 : minutes
-    }
-
-
-    checkIfTimerHasEnded(coutDown){
-        let state = this.state.timerState
-        if(this.state.timer[state].minutes === 0 && this.state.timer[state].seconds === 0){
-            clearInterval(coutDown)
-            Vibrate()
-            this.setState({
-                timerIsActive : false
-            })
-            this.changeTimerState()
-            this.resetTimer()
-            this.startTimer()
-        }
-    }
-
-    changeTimerState(){
-        if(this.state.timerState === 'focus'){
-            this.setState({timerState : 'break'})
-        }
-        else{
-            this.setState({timerState : 'focus'})
-        }
-    }
-
-    valueHasChanged(value, state){
+//*** User input functions
+    inputValueHasChanged(value, state){
         this.setState({
             customTimeValue :
             {
@@ -241,8 +162,8 @@ export default class Timer extends React.Component{
     }
 
     setCustomTimeValue(state){
-        if(+this.state.customTimeValue[state] && this.state.customTimeValue[state] != null && !this.state.timerIsActive){
-                    timeChosen[state] = this.isValueOutOfRange(state)
+        if(+this.state.customTimeValue[state] && !this.state.timerIsActive){
+                    chosenTime[state] = this.isValueOutOfRange(state)
                     this.resetTimer(state)
                     this.setState({
                         customTimeValue :
@@ -265,9 +186,11 @@ export default class Timer extends React.Component{
         return this.state.customTimeValue[state] > 59 ? 59 : this.state.customTimeValue[state]
     }
 
-    //*** 
+//*** End
 
-    setBorderColor(){
+//*** Styling Functions
+
+    setTimerBorderColor(){
         let borderColor
         if(!this.state.timerIsActive){
             borderColor = styles.timer_value_border_pause
@@ -277,27 +200,25 @@ export default class Timer extends React.Component{
         return  borderColor
     }
 
+    setActionOnPress(){
+        return this.setActionLabel() === 'Start' || this.setActionLabel() === 'Resume' ? this.startTimer() : this.pauseTimer()
+    }
 
     setActionLabel(){
         let state = this.state.timerState
         let actionLabel = 'Start'
 
-        if(!this.state.timerIsActive && this.state.timer[state].minutes !== timeChosen[state] || this.state.timerIsActive){
+        if(!this.state.timerIsActive && this.state.timer[state].minutes !== chosenTime[state]){
             actionLabel = 'Resume'
         } 
-        if(this.state.timerIsActive){
+        else if(this.state.timerIsActive){
             actionLabel = 'Pause'
         }
-
         return actionLabel
     }
 
-    setActionOnPress(){
-        return this.setActionLabel() === 'Start' || this.setActionLabel() === 'Resume' ? this.startTimer() : this.pauseTimer()
-    }
-
-    setTimerMessage(){
-        let timerMessage = this.state.timerState.toUpperCase()
+    setTimerStateMessage(){
+        let timerMessage = this.state.timerState
 
         if(!this.state.timerIsActive){
             timerMessage = '...'
@@ -306,138 +227,95 @@ export default class Timer extends React.Component{
         return timerMessage.toUpperCase()
     }
 
-    setTimerMessageTextColor(){
+    setTimerStateMessageTextColor(){
         return  styles['timer_message_' + this.state.timerState]
     }
+ 
+//*** End
+
+//*** Functional functions
+
+    startTimer(){
+        if(!this.state.timerIsActive){
+            this.setState({timerIsActive : true})
+            this.decrementTimer()
+        } 
+    }
+
+    decrementTimer(){
+        let state = this.state.timerState
+        coutDown = setInterval(()=>{
+            this.setState((previousState)=>{
+                return {
+                    timer : {
+                        ...this.state.timer,
+                        [state] : {
+                            minutes : this.decrementMinutes(previousState.timer[state].minutes, previousState.timer[state].seconds - 1),
+                            seconds : this.decrementSeconds(previousState.timer[state].seconds - 1),
+                        }
+                    }
+                }
+             })
+
+             this.checkIfTimerHasEnded(coutDown)
+
+        },1000)
+    }
+
+    decrementSeconds(seconds){
+        return seconds === -1 ? 59 : seconds
+    }
+    
+    decrementMinutes(minutes, seconds){
+        return seconds === -1 ? (minutes - 1) : minutes
+    }
+
+    checkIfTimerHasEnded(coutDown){
+        let state = this.state.timerState
+        if(this.state.timer[state].minutes === 0 && this.state.timer[state].seconds === 0){
+            clearInterval(coutDown)
+            Vibrate()
+            this.setState({
+                timerIsActive : false
+            })
+            this.changeTimerState()
+            this.resetTimer()
+            this.startTimer()
+        }
+    }
+
+
+    changeTimerState(){
+        if(this.state.timerState === 'focus'){
+            this.setState({timerState : 'break'})
+        }
+        else{
+            this.setState({timerState : 'focus'})
+        }
+    }
+
+
+    pauseTimer(){
+        this.setState({timerIsActive : false})
+        clearInterval(coutDown)
+    }
+
+    resetTimer(state = undefined){
+        if(state == undefined){
+            state = this.state.timerState
+        }
+        this.setState({
+            timer : {
+                ...this.state.timer,
+                [state] : {
+                    minutes : chosenTime[state],
+                    seconds : 0
+                }
+            },
+        })
+    }
+
+//*** End
 
 }
 
-
-
-const styles = StyleSheet.create({
-
-    container : {
-        flex : 1,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        backgroundColor: '#1f1f1f',
-    },
-
-    font_white :{
-        color : '#ffffff'
-    },
-
-    big_bold_font : {
-        fontSize : 20,
-        fontWeight : 'bold'
-    },
-
-    margin_top : {
-        marginTop : 15
-    },
-
-    timer_value_container : {
-        justifyContent : 'center',
-        alignItems : 'center',
-        height : 250,
-        lineHeight : 240,
-        width : 250,
-        borderRadius : 250/2,
-        borderWidth : 4,
-        //backgroundColor : 'green'
-    },
-
-    timer_message : {
-        fontSize : 24,
-        color : '#ffffff',
-    },
-    
-    timer_message_focus : {
-        color : '#a32727',
-    },
-
-    timer_message_break : {
-        color : '#41b31e'
-    },
-
-    timer_value : {
-        textAlign : 'center',
-        fontSize : 60,
-        color  : '#ffffff',
-    },
-
-    timer_value_border_pause : {
-        borderColor : '#2b6cb3',
-    },
-
-    timer_value_border_focus : {
-        borderColor : '#a32727',
-    },
-
-    timer_value_border_break : {
-        borderColor : '#41b31e',
-    },
-
-
-    buttons_container : {
-        flex : 4,
-        flexDirection : 'row',
-        justifyContent : 'space-around',
-        alignItems : 'center',
-        //backgroundColor : 'red',
-        width:'100%'
-    },
-
-    button_colors : {
-        color : '#ffffff',
-        backgroundColor :'#2b6cb3',
-    },
-
-    button_format : {
-        textAlign : 'center',
-        fontSize : 20,
-        padding : 5,
-        width : 100,
-        borderRadius : 30,
-    },
-
-    disabled_button : {
-        backgroundColor : 'rgba(41, 112, 227, 0.2)',
-    },
-
-    pause_button : {
-        backgroundColor : '#a32727',
-    },
-
-    inputs_container : {
-        flex : 2,
-        flexDirection : 'row',
-        justifyContent : 'space-around',
-        alignItems : 'flex-start',
-        width : '100%',
-       // backgroundColor : 'yellow'
-    },
-
-    flex_direction_row : {
-        flexDirection : 'row'
-    },
-
-    user_input : {
-        backgroundColor : '#2E2E2E',
-        color : '#ffffff',
-        padding : 10,
-        height : 35,
-        width : 100,
-        borderRadius : 5,
-    },
-
-    chosen_time : {
-        justifyContent : 'space-around'
-    },
-
-    width_number : {
-        width : 30,
-        textAlign : 'center'
-    },
-
-})
