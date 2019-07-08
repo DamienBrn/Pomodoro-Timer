@@ -10,15 +10,15 @@ export default class Timer extends React.Component{
         return(
             <View style={styles.main_container}>
 
-                <View style={[styles.buttons_container, styles.time_options_container]}>
+                <View style={[styles.buttons_container, styles.buttons_container_top, styles.time_options_container]}>
                     <TouchableOpacity onPress={()=>this.changeChosenTimeDefaultOptions(timeOptions.firstOption)} disabled={this.state.timerIsActive}>
-                        <Text style={[styles.button_format, styles.button_colors, chosenTime.focus !== timeOptions.firstOption.focus ? styles.disabled_button : null ]}>
+                        <Text style={[styles.button_format, styles.button_colors, this.isOptionDisabled('first')]}>
                             {timeOptions.firstOption.focus}/{timeOptions.firstOption.break} min
                         </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={()=>this.changeChosenTimeDefaultOptions(timeOptions.secondOption)} disabled={this.state.timerIsActive}>
-                        <Text style={[styles.button_format, styles.button_colors, chosenTime.focus !== timeOptions.secondOption.focus ? styles.disabled_button : null ]}>
+                        <Text style={[styles.button_format, styles.button_colors, this.isOptionDisabled('second')]}>
                             {timeOptions.secondOption.focus}/{timeOptions.secondOption.break} min
                         </Text>
                     </TouchableOpacity>
@@ -38,7 +38,7 @@ export default class Timer extends React.Component{
                             />
                             <Button style={styles.button_custom_user_input} title="Ok" onPress={()=>this.setCustomTimeValue('focus')} />
                         </View>
-                        <View style={[styles.margin_top, styles.flex_direction_row, styles.chosen_time]}>
+                        <View style={[styles.margin_top, styles.flex_direction_row, styles.space_around]}>
                             <Text style={[styles.font_white, styles.big_bold_font]}>Focus :</Text> 
                             <Text style={[styles.font_white, styles.big_bold_font, styles.width_number]}>{chosenTime.focus}</Text>
                         </View>
@@ -57,7 +57,7 @@ export default class Timer extends React.Component{
                             />
                             <Button style={styles.button_custom_user_input} title="Ok" onPress={()=>this.setCustomTimeValue('break')} />
                         </View>
-                        <View style={[styles.margin_top, styles.flex_direction_row, styles.chosen_time]}>
+                        <View style={[styles.margin_top, styles.flex_direction_row, styles.space_around]}>
                             <Text style={[styles.font_white, styles.big_bold_font]}>Break :</Text> 
                             <Text style={[styles.font_white, styles.big_bold_font, styles.width_number]}>{chosenTime.break}</Text>
                         </View>
@@ -71,13 +71,13 @@ export default class Timer extends React.Component{
                     <Text style={[styles.timer_message, this.setTimerStateMessageTextColor()]}>{this.setTimerStateMessage()}</Text>
                 </View>
             
-                <View style={styles.buttons_container}>
-                    <TouchableOpacity title="Start" activeOpacity={this.state.timerIsActive ? 1 : 0.7} onPress={()=>this.setActionOnPress()}>
-                        <Text style={[styles.button_format , styles.button_colors, this.setActionLabel() === 'Pause' ? styles.pause_button : null ]} >{this.setActionLabel()}</Text>
+                <View style={[styles.buttons_container, styles.buttons_container_bottom]}>
+                    <TouchableOpacity title="Start" onPress={()=>this.setActionOnPress()}>
+                        <Text style={[styles.button_format , styles.button_colors, this.isTimerOnPause()]} >{this.setActionLabel()}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity title="Reset" onPress={()=>this.resetTimer()} disabled={this.state.timerIsActive || this.state.timer[this.state.timerState].minutes === chosenTime[this.state.timerState]}>
-                        <Text style={[styles.button_format , styles.button_colors, this.state.timerIsActive || this.state.timer[this.state.timerState].minutes === chosenTime[this.state.timerState] ? styles.disabled_button : null ]} >Reset</Text>
+                    <TouchableOpacity title="Reset" onPress={()=>this.resetTimer()} disabled={this.timerIsActiveOrTimeIsOrigin()}>
+                        <Text style={[styles.button_format , styles.button_colors, this.isResetButtonDisabled()]} >Reset</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -123,8 +123,6 @@ export default class Timer extends React.Component{
         }
     }
 
-
-
     changeChosenTimeDefaultOptions(chosenOption){
         this.setState({
             timer : {
@@ -147,7 +145,6 @@ export default class Timer extends React.Component{
     displayTwoDigits(numberOfDigits){
         return (numberOfDigits < 10) ? ('0' + numberOfDigits) : numberOfDigits
     }
-
 
 
 //*** User input functions
@@ -231,6 +228,25 @@ export default class Timer extends React.Component{
         return  styles['timer_message_' + this.state.timerState]
     }
  
+
+    isResetButtonDisabled(){
+        return this.timerIsActiveOrTimeIsOrigin() ? styles.disabled_button : null 
+    }
+
+    isTimerOnPause(){
+        return this.setActionLabel() === 'Pause' ? styles.pause_button : null 
+    }
+
+    timerIsActiveOrTimeIsOrigin(){
+       return this.state.timerIsActive || this.state.timer[this.state.timerState].minutes === chosenTime[this.state.timerState]
+    }
+
+    isOptionDisabled(optionRank){
+        return  chosenTime.focus !== timeOptions[optionRank + 'Option'].focus 
+                || chosenTime.break !== timeOptions[optionRank + 'Option'].break
+                ? styles.disabled_button : null
+    }
+
 //*** End
 
 //*** Functional functions

@@ -22,6 +22,8 @@ export const styles = StyleSheet.create({
         width : 250,
         borderRadius : 250/2,
         borderWidth : 4,
+        marginTop : 50,
+        marginBottom : 50
     },
 
     timer_message : {
@@ -38,7 +40,6 @@ export const styles = StyleSheet.create({
     },
 
     timer_value : {
-        textAlign : 'center',
         fontSize : 60,
         color  : '#ffffff',
     },
@@ -60,11 +61,18 @@ export const styles = StyleSheet.create({
     //*** Buttons (top and bottom) ***//
 
     buttons_container : {
-        flex : 4,
         flexDirection : 'row',
         justifyContent : 'space-around',
         alignItems : 'center',
-        width:'100%'
+        width:'100%',
+    },
+
+    buttons_container_bottom : {
+        flex : 2,
+    },
+
+    buttons_container_top : {
+        flex : 3,
     },
 
     button_colors : {
@@ -97,7 +105,6 @@ export const styles = StyleSheet.create({
         flex : 2,
         flexDirection : 'row',
         justifyContent : 'space-around',
-        alignItems : 'flex-start',
         width : '100%',
     },
 
@@ -110,10 +117,6 @@ export const styles = StyleSheet.create({
         borderRadius : 5,
     },
 
-    chosen_time : {
-        justifyContent : 'space-around'
-    },
-
     //*** End ***//
 
 
@@ -121,6 +124,10 @@ export const styles = StyleSheet.create({
 
     flex_direction_row : {
         flexDirection : 'row'
+    },
+
+    space_around : {
+        justifyContent : 'space-around'
     },
 
     width_number : {
@@ -142,3 +149,4 @@ export const styles = StyleSheet.create({
     },
 
 })
+
