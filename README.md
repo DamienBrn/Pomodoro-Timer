@@ -12,3 +12,5 @@ This pomodoro timer app was made for practice purposes, following the Harvard CS
 ![Alt text](ScreenShots/pomodoro_timer_screen_04.jpg?raw=true )
 
 ![Alt text](ScreenShots/pomodoro_timer_screen_05.jpg?raw=true "Optional Title")
+
+<img src="ScreenShots/pomodoro_timer_screen_01.jpg" alt="alt text" width="50" height="100">
