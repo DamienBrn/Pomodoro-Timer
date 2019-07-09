@@ -92,6 +92,10 @@ export const styles = StyleSheet.create({
         backgroundColor : 'rgba(41, 112, 227, 0.2)',
     },
 
+    active_button : {
+        backgroundColor : 'rgba(41, 112, 227, 1)',
+    },
+
     pause_button : {
         backgroundColor : '#a32727',
     },

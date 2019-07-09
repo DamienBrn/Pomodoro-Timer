@@ -180,7 +180,7 @@ export default class Timer extends React.Component{
     
 
     isValueOutOfRange(state){
-        return this.state.customTimeValue[state] > 59 ? 59 : this.state.customTimeValue[state]
+        return this.state.customTimeValue[state] > 59 ? 59 : +this.state.customTimeValue[state]
     }
 
 //*** End
