@@ -2,15 +2,12 @@
 
 This pomodoro timer app was made for practice purposes, following the Harvard CS50 course about app development.
 
+<img src="ScreenShots/pomodoro_timer_screen_01.jpg" alt="alt text" width="200" height="400">
 
-![Alt text](ScreenShots/pomodoro_timer_screen_01.jpg?raw=true )
+<img src="ScreenShots/pomodoro_timer_screen_02.jpg" alt="alt text" width="200" height="400">
 
-![Alt text](ScreenShots/pomodoro_timer_screen_02.jpg?raw=true )
+<img src="ScreenShots/pomodoro_timer_screen_03.jpg" alt="alt text" width="200" height="400">
 
-![Alt text](ScreenShots/pomodoro_timer_screen_03.jpg?raw=true )
+<img src="ScreenShots/pomodoro_timer_screen_04.jpg" alt="alt text" width="200" height="400">
 
-![Alt text](ScreenShots/pomodoro_timer_screen_04.jpg?raw=true )
-
-![Alt text](ScreenShots/pomodoro_timer_screen_05.jpg?raw=true "Optional Title")
-
-<img src="ScreenShots/pomodoro_timer_screen_01.jpg" alt="alt text" width="50" height="100">
+<img src="ScreenShots/pomodoro_timer_screen_05.jpg" alt="alt text" width="200" height="400">
