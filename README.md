@@ -1,6 +1,6 @@
 # Project 1 - Pomodoro Timer
 
-This pomodoro timer app was made for practice purposes, following the Harvard CS50 course about app development. 
+This pomodoro timer app was made for practice purposes, by taking the Harvard CS50 course about app development. 
 Link to the course : https://online-learning.harvard.edu/course/cs50s-mobile-app-development-react-native?delta=0
 
 
@@ -17,7 +17,7 @@ Link to the course : https://online-learning.harvard.edu/course/cs50s-mobile-app
 </p>
 
 
-## Installation and Run (Using Expo CLI on physical device)
+## Installation and Run (Using Expo CLI on a physical device)
 
 * Clone project
 * `npm i`
