@@ -30,7 +30,11 @@
   "private": true,
   "jest": {
     "preset": "jest-expo",
-    "setupFilesAfterEnv": ["./node_modules/jest-enzyme/lib/index.js"],
-    "setupFiles": ["enzyme-react-16-adapter-setup"]
+    "setupFilesAfterEnv": [
+      "./node_modules/jest-enzyme/lib/index.js"
+    ],
+    "setupFiles": [
+      "enzyme-react-16-adapter-setup"
+    ]
   }
 }
