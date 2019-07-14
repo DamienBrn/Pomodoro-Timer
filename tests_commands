@@ -1,0 +1,16 @@
+start tests : npm t
+
+start watch : npm t -- --watch (with a script -> npm run test:watch)
+
+========================
+
+===Snapshots===
+
+Update snapshot -> npm t -- --u
+
+
+===Code Coverage===
+
+npm t -- --coverage
+
+

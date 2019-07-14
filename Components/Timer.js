@@ -4,6 +4,7 @@ import Vibrate from '../utils/vibrate'
 import {styles} from './Timer_styles'
 
 
+
 export default class Timer extends React.Component{
 
     render(){
@@ -88,7 +89,7 @@ export default class Timer extends React.Component{
     
     constructor(props){
         super(props)
-        coutDown = null,
+        countDown = null,
         timeOptions = {
             firstOption : {
                 focus : 5,
@@ -142,8 +143,8 @@ export default class Timer extends React.Component{
         chosenTime.break = chosenOption.break
     }
 
-    displayTwoDigits(numberOfDigits){
-        return (numberOfDigits < 10) ? ('0' + numberOfDigits) : numberOfDigits
+    displayTwoDigits(number){
+        return (number < 10) ? ('0' + number) : number
     }
 
 
@@ -177,10 +178,9 @@ export default class Timer extends React.Component{
             })
         }
     }
-    
 
     isValueOutOfRange(state){
-        return this.state.customTimeValue[state] > 59 ? 59 : +this.state.customTimeValue[state]
+        return this.state.customTimeValue[state] > 59 ? 59 : + this.state.customTimeValue[state]
     }
 
 //*** End
@@ -260,36 +260,36 @@ export default class Timer extends React.Component{
 
     decrementTimer(){
         let state = this.state.timerState
-        coutDown = setInterval(()=>{
+        countDown = setInterval(()=>{
             this.setState((previousState)=>{
                 return {
                     timer : {
                         ...this.state.timer,
                         [state] : {
-                            minutes : this.decrementMinutes(previousState.timer[state].minutes, previousState.timer[state].seconds - 1),
-                            seconds : this.decrementSeconds(previousState.timer[state].seconds - 1),
+                            minutes : this.isDecrementMinutesOutOfRange(previousState.timer[state].minutes, previousState.timer[state].seconds - 1),
+                            seconds : this.isDecrementSecondsOutOfRange(previousState.timer[state].seconds - 1),
                         }
                     }
                 }
              })
 
-             this.checkIfTimerHasEnded(coutDown)
+             this.checkIfTimerHasEnded(countDown)
 
         },1000)
     }
 
-    decrementSeconds(seconds){
+    isDecrementSecondsOutOfRange(seconds){
         return seconds === -1 ? 59 : seconds
     }
     
-    decrementMinutes(minutes, seconds){
+    isDecrementMinutesOutOfRange(minutes, seconds){
         return seconds === -1 ? (minutes - 1) : minutes
     }
 
-    checkIfTimerHasEnded(coutDown){
+    checkIfTimerHasEnded(countDown){
         let state = this.state.timerState
         if(this.state.timer[state].minutes === 0 && this.state.timer[state].seconds === 0){
-            clearInterval(coutDown)
+            clearInterval(countDown)
             Vibrate()
             this.setState({
                 timerIsActive : false
@@ -313,7 +313,7 @@ export default class Timer extends React.Component{
 
     pauseTimer(){
         this.setState({timerIsActive : false})
-        clearInterval(coutDown)
+        clearInterval(countDown)
     }
 
     resetTimer(state = undefined){

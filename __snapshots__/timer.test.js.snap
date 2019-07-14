@@ -1,0 +1,436 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`My timer  Shallow rendering 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#1f1f1f",
+      "flex": 1,
+      "justifyContent": "space-around",
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-around",
+          "width": "100%",
+        },
+        Object {
+          "flex": 3,
+        },
+        undefined,
+      ]
+    }
+  >
+    <TouchableOpacity
+      activeOpacity={0.2}
+      disabled={false}
+      onPress={[Function]}
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "borderRadius": 30,
+              "fontSize": 20,
+              "padding": 5,
+              "textAlign": "center",
+              "width": 100,
+            },
+            Object {
+              "backgroundColor": "#2b6cb3",
+              "color": "#ffffff",
+            },
+            null,
+          ]
+        }
+      >
+        5
+        /
+        1
+         min
+      </Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+      activeOpacity={0.2}
+      disabled={false}
+      onPress={[Function]}
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "borderRadius": 30,
+              "fontSize": 20,
+              "padding": 5,
+              "textAlign": "center",
+              "width": 100,
+            },
+            Object {
+              "backgroundColor": "#2b6cb3",
+              "color": "#ffffff",
+            },
+            Object {
+              "backgroundColor": "rgba(41, 112, 227, 0.2)",
+            },
+          ]
+        }
+      >
+        25
+        /
+        5
+         min
+      </Text>
+    </TouchableOpacity>
+  </View>
+  <View
+    style={
+      Object {
+        "flex": 2,
+        "flexDirection": "row",
+        "justifyContent": "space-around",
+        "width": "100%",
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <TextInput
+          allowFontScaling={true}
+          keyboardType="numeric"
+          maxLength={2}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSubmitEditing={[Function]}
+          placeholder="Focus time"
+          rejectResponderTermination={true}
+          style={
+            Object {
+              "backgroundColor": "#2E2E2E",
+              "borderRadius": 5,
+              "color": "#ffffff",
+              "height": 35,
+              "padding": 10,
+              "width": 100,
+            }
+          }
+          underlineColorAndroid="transparent"
+          value={null}
+        />
+        <Button
+          onPress={[Function]}
+          title="Ok"
+        />
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "marginTop": 15,
+            },
+            Object {
+              "flexDirection": "row",
+            },
+            Object {
+              "justifyContent": "space-around",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+                "fontWeight": "bold",
+              },
+            ]
+          }
+        >
+          Focus :
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+                "fontWeight": "bold",
+              },
+              Object {
+                "textAlign": "center",
+                "width": 30,
+              },
+            ]
+          }
+        >
+          5
+        </Text>
+      </View>
+    </View>
+    <View>
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <TextInput
+          allowFontScaling={true}
+          keyboardType="numeric"
+          maxLength={2}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          onSubmitEditing={[Function]}
+          placeholder="Break time"
+          rejectResponderTermination={true}
+          style={
+            Object {
+              "backgroundColor": "#2E2E2E",
+              "borderRadius": 5,
+              "color": "#ffffff",
+              "height": 35,
+              "padding": 10,
+              "width": 100,
+            }
+          }
+          underlineColorAndroid="transparent"
+          value={null}
+        />
+        <Button
+          onPress={[Function]}
+          title="Ok"
+        />
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "marginTop": 15,
+            },
+            Object {
+              "flexDirection": "row",
+            },
+            Object {
+              "justifyContent": "space-around",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+                "fontWeight": "bold",
+              },
+            ]
+          }
+        >
+          Break :
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#ffffff",
+              },
+              Object {
+                "fontSize": 20,
+                "fontWeight": "bold",
+              },
+              Object {
+                "textAlign": "center",
+                "width": 30,
+              },
+            ]
+          }
+        >
+          1
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "borderRadius": 125,
+          "borderWidth": 4,
+          "height": 250,
+          "justifyContent": "center",
+          "lineHeight": 240,
+          "marginBottom": 50,
+          "marginTop": 50,
+          "width": 250,
+        },
+        Object {
+          "borderColor": "#2b6cb3",
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#ffffff",
+          "fontSize": 60,
+        }
+      }
+    >
+      05
+       : 
+      00
+    </Text>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#ffffff",
+            "fontSize": 24,
+          },
+          Object {
+            "color": "#a32727",
+          },
+        ]
+      }
+    >
+      ...
+    </Text>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-around",
+          "width": "100%",
+        },
+        Object {
+          "flex": 2,
+        },
+      ]
+    }
+  >
+    <TouchableOpacity
+      activeOpacity={0.2}
+      onPress={[Function]}
+      title="Start"
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "borderRadius": 30,
+              "fontSize": 20,
+              "padding": 5,
+              "textAlign": "center",
+              "width": 100,
+            },
+            Object {
+              "backgroundColor": "#2b6cb3",
+              "color": "#ffffff",
+            },
+            null,
+          ]
+        }
+      >
+        Start
+      </Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+      activeOpacity={0.2}
+      disabled={true}
+      onPress={[Function]}
+      title="Reset"
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "borderRadius": 30,
+              "fontSize": 20,
+              "padding": 5,
+              "textAlign": "center",
+              "width": 100,
+            },
+            Object {
+              "backgroundColor": "#2b6cb3",
+              "color": "#ffffff",
+            },
+            Object {
+              "backgroundColor": "rgba(41, 112, 227, 0.2)",
+            },
+          ]
+        }
+      >
+        Reset
+      </Text>
+    </TouchableOpacity>
+  </View>
+</View>
+`;
+
+exports[`My timer  setTimerBorderColor with break state should return green 1`] = `
+Object {
+  "borderColor": "#41b31e",
+}
+`;
+
+exports[`My timer  setTimerBorderColor with focus state should return red 1`] = `
+Object {
+  "borderColor": "#a32727",
+}
+`;
+
+exports[`My timer  setTimerBorderColor with timerIsActive === false should return blue 1`] = `
+Object {
+  "borderColor": "#2b6cb3",
+}
+`;
+
+exports[`My timer  setTimerStateMessage with break state should return BREAK 1`] = `"BREAK"`;
+
+exports[`My timer  setTimerStateMessage with focus state should return FOCUS 1`] = `"FOCUS"`;
+
+exports[`My timer  setTimerStateMessage with timer is paused should return ... 1`] = `"..."`;
+
+exports[`My timer  setTimerStateMessageTextColor with break state should return green 1`] = `
+Object {
+  "color": "#41b31e",
+}
+`;
+
+exports[`My timer  setTimerStateMessageTextColor with focus state should return red 1`] = `
+Object {
+  "color": "#a32727",
+}
+`;
+
+exports[`My timer  timerIsActiveOrTimeIsOrigin with "active timer" and "time is origin" should return true 1`] = `true`;
+
+exports[`My timer  timerIsActiveOrTimeIsOrigin with "timer is not active" "time is not origin" should return false 1`] = `true`;
+
+exports[`My timer  timerIsActiveOrTimeIsOrigin with "timer is not active" "time is origin" should return true 1`] = `true`;
