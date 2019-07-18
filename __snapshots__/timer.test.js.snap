@@ -393,44 +393,38 @@ exports[`My timer  Shallow rendering 1`] = `
 </View>
 `;
 
-exports[`My timer  setTimerBorderColor with break state should return green 1`] = `
-Object {
-  "borderColor": "#41b31e",
-}
-`;
+exports[`My timer  Styling functions setActionOnPress with "Resume" should return startTimer 1`] = `undefined`;
 
-exports[`My timer  setTimerBorderColor with focus state should return red 1`] = `
+exports[`My timer  Styling functions setTimerBorderColor with focus state should return red 1`] = `
 Object {
   "borderColor": "#a32727",
 }
 `;
 
-exports[`My timer  setTimerBorderColor with timerIsActive === false should return blue 1`] = `
+exports[`My timer  Styling functions setTimerBorderColor with timerIsActive === false should return blue 1`] = `
 Object {
   "borderColor": "#2b6cb3",
 }
 `;
 
-exports[`My timer  setTimerStateMessage with break state should return BREAK 1`] = `"BREAK"`;
+exports[`My timer  Styling functions setTimerStateMessage with break state should return BREAK 1`] = `"BREAK"`;
 
-exports[`My timer  setTimerStateMessage with focus state should return FOCUS 1`] = `"FOCUS"`;
+exports[`My timer  Styling functions setTimerStateMessage with focus state should return FOCUS 1`] = `"FOCUS"`;
 
-exports[`My timer  setTimerStateMessage with timer is paused should return ... 1`] = `"..."`;
+exports[`My timer  Styling functions setTimerStateMessage with timer is paused should return ... 1`] = `"..."`;
 
-exports[`My timer  setTimerStateMessageTextColor with break state should return green 1`] = `
+exports[`My timer  Styling functions setTimerStateMessageTextColor with break state should return green 1`] = `
 Object {
   "color": "#41b31e",
 }
 `;
 
-exports[`My timer  setTimerStateMessageTextColor with focus state should return red 1`] = `
+exports[`My timer  Styling functions setTimerStateMessageTextColor with focus state should return red 1`] = `
 Object {
   "color": "#a32727",
 }
 `;
 
-exports[`My timer  timerIsActiveOrTimeIsOrigin with "active timer" and "time is origin" should return true 1`] = `true`;
+exports[`My timer  Styling functions timerIsActiveOrTimeIsOrigin with "timer is active" and "time is origin" should return true 1`] = `true`;
 
-exports[`My timer  timerIsActiveOrTimeIsOrigin with "timer is not active" "time is not origin" should return false 1`] = `true`;
-
-exports[`My timer  timerIsActiveOrTimeIsOrigin with "timer is not active" "time is origin" should return true 1`] = `true`;
+exports[`My timer  Styling functions timerIsActiveOrTimeIsOrigin with "timer is not active" "time is origin" should return true 1`] = `true`;

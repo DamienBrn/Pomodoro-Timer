@@ -1,8 +1,7 @@
 import React from 'react'
 import {Text, View, TouchableOpacity, TextInput, Button} from 'react-native'
-import Vibrate from '../utils/vibrate'
+import vibrate from '../utils/vibrate'
 import {styles} from './Timer_styles'
-
 
 
 export default class Timer extends React.Component{
@@ -12,15 +11,15 @@ export default class Timer extends React.Component{
             <View style={styles.main_container}>
 
                 <View style={[styles.buttons_container, styles.buttons_container_top, styles.time_options_container]}>
-                    <TouchableOpacity onPress={()=>this.changeChosenTimeDefaultOptions(timeOptions.firstOption)} disabled={this.state.timerIsActive}>
+                    <TouchableOpacity onPress={()=>this.changeChosenTimeDefaultOptions(this.timeOptions.firstOption)} disabled={this.state.timerIsActive}>
                         <Text style={[styles.button_format, styles.button_colors, this.isOptionDisabled('first')]}>
-                            {timeOptions.firstOption.focus}/{timeOptions.firstOption.break} min
+                            {this.timeOptions.firstOption.focus}/{this.timeOptions.firstOption.break} min
                         </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={()=>this.changeChosenTimeDefaultOptions(timeOptions.secondOption)} disabled={this.state.timerIsActive}>
+                    <TouchableOpacity onPress={()=>this.changeChosenTimeDefaultOptions(this.timeOptions.secondOption)} disabled={this.state.timerIsActive}>
                         <Text style={[styles.button_format, styles.button_colors, this.isOptionDisabled('second')]}>
-                            {timeOptions.secondOption.focus}/{timeOptions.secondOption.break} min
+                            {this.timeOptions.secondOption.focus}/{this.timeOptions.secondOption.break} min
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -41,7 +40,7 @@ export default class Timer extends React.Component{
                         </View>
                         <View style={[styles.margin_top, styles.flex_direction_row, styles.space_around]}>
                             <Text style={[styles.font_white, styles.big_bold_font]}>Focus :</Text> 
-                            <Text style={[styles.font_white, styles.big_bold_font, styles.width_number]}>{chosenTime.focus}</Text>
+                            <Text style={[styles.font_white, styles.big_bold_font, styles.width_number]}>{this.chosenTime.focus}</Text>
                         </View>
                     </View>
 
@@ -60,7 +59,7 @@ export default class Timer extends React.Component{
                         </View>
                         <View style={[styles.margin_top, styles.flex_direction_row, styles.space_around]}>
                             <Text style={[styles.font_white, styles.big_bold_font]}>Break :</Text> 
-                            <Text style={[styles.font_white, styles.big_bold_font, styles.width_number]}>{chosenTime.break}</Text>
+                            <Text style={[styles.font_white, styles.big_bold_font, styles.width_number]}>{this.chosenTime.break}</Text>
                         </View>
                     </View>
 
@@ -89,8 +88,8 @@ export default class Timer extends React.Component{
     
     constructor(props){
         super(props)
-        countDown = null,
-        timeOptions = {
+        this.countDown = null,
+        this.timeOptions = {
             firstOption : {
                 focus : 5,
                 break : 1
@@ -100,18 +99,18 @@ export default class Timer extends React.Component{
                 break : 5
             }
         },
-        chosenTime = {
-            focus : timeOptions.firstOption.focus,
-            break : timeOptions.firstOption.break
+        this.chosenTime = {
+            focus : this.timeOptions.firstOption.focus,
+            break : this.timeOptions.firstOption.break
         }  
-        this.state={
+        this.state = {
             timer : {
-                focus:{
-                    minutes : chosenTime.focus,
+                focus : {
+                    minutes : this.chosenTime.focus,
                     seconds : 0
                 },
                 break : {
-                    minutes : chosenTime.break,
+                    minutes : this.chosenTime.break,
                     seconds : 0
                 }
             },
@@ -119,7 +118,7 @@ export default class Timer extends React.Component{
             timerState : 'focus',
             customTimeValue: {
                 focus : null,
-                break :null
+                break : null
             },
         }
     }
@@ -128,19 +127,19 @@ export default class Timer extends React.Component{
         this.setState({
             timer : {
                 ...this.state.timer,
-                focus : {
+                focus : {...this.state.timer.focus,
                     minutes : chosenOption.focus,
                     seconds : 0
                 },
-                break : {
+                break : {...this.state.timer.break,
                     minutes : chosenOption.break,
                     seconds : 0
                 }
             }
         })
 
-        chosenTime.focus = chosenOption.focus
-        chosenTime.break = chosenOption.break
+        this.chosenTime.focus = chosenOption.focus
+        this.chosenTime.break = chosenOption.break
     }
 
     displayTwoDigits(number){
@@ -161,7 +160,7 @@ export default class Timer extends React.Component{
 
     setCustomTimeValue(state){
         if(+this.state.customTimeValue[state] && !this.state.timerIsActive){
-                    chosenTime[state] = this.isValueOutOfRange(state)
+                    this.chosenTime[state] = this.isValueOutOfRange(state)
                     this.resetTimer(state)
                     this.setState({
                         customTimeValue :
@@ -205,7 +204,7 @@ export default class Timer extends React.Component{
         let state = this.state.timerState
         let actionLabel = 'Start'
 
-        if(!this.state.timerIsActive && this.state.timer[state].minutes !== chosenTime[state]){
+        if(!this.state.timerIsActive && this.state.timer[state].minutes !== this.chosenTime[state]){
             actionLabel = 'Resume'
         } 
         else if(this.state.timerIsActive){
@@ -238,12 +237,12 @@ export default class Timer extends React.Component{
     }
 
     timerIsActiveOrTimeIsOrigin(){
-       return this.state.timerIsActive || this.state.timer[this.state.timerState].minutes === chosenTime[this.state.timerState]
+       return this.state.timerIsActive || this.state.timer[this.state.timerState].minutes === this.chosenTime[this.state.timerState]
     }
 
     isOptionDisabled(optionRank){
-        return  chosenTime.focus !== timeOptions[optionRank + 'Option'].focus 
-                || chosenTime.break !== timeOptions[optionRank + 'Option'].break
+        return  this.chosenTime.focus !== this.timeOptions[optionRank + 'Option'].focus 
+                || this.chosenTime.break !== this.timeOptions[optionRank + 'Option'].break
                 ? styles.disabled_button : null
     }
 
@@ -260,7 +259,7 @@ export default class Timer extends React.Component{
 
     decrementTimer(){
         let state = this.state.timerState
-        countDown = setInterval(()=>{
+        this.countDown = setInterval(()=>{
             this.setState((previousState)=>{
                 return {
                     timer : {
@@ -273,7 +272,7 @@ export default class Timer extends React.Component{
                 }
              })
 
-             this.checkIfTimerHasEnded(countDown)
+             this.checkIfTimerHasEnded(this.countDown)
 
         },1000)
     }
@@ -290,7 +289,7 @@ export default class Timer extends React.Component{
         let state = this.state.timerState
         if(this.state.timer[state].minutes === 0 && this.state.timer[state].seconds === 0){
             clearInterval(countDown)
-            Vibrate()
+            vibrate()
             this.setState({
                 timerIsActive : false
             })
@@ -313,7 +312,7 @@ export default class Timer extends React.Component{
 
     pauseTimer(){
         this.setState({timerIsActive : false})
-        clearInterval(countDown)
+        clearInterval(this.countDown)
     }
 
     resetTimer(state = undefined){
@@ -324,7 +323,7 @@ export default class Timer extends React.Component{
             timer : {
                 ...this.state.timer,
                 [state] : {
-                    minutes : chosenTime[state],
+                    minutes : this.chosenTime[state],
                     seconds : 0
                 }
             },
