@@ -456,8 +456,8 @@ describe('My timer ', () => {
 
             expect(componentInstance.isOptionDisabled('second')).toEqual({backgroundColor : 'rgba(41, 112, 227, 0.2)'})
         })
-/*
-        it('setActionOnPress with "Resume" should return startTimer', ()=>{
+
+        it('setActionOnPress with "focus state" and "Resume" should return startTimer', ()=>{
             componentInstance.setState({...componentInstance.state,                 
                 timerIsActive : false,
                 timerState : 'focus',
@@ -469,11 +469,79 @@ describe('My timer ', () => {
             })
             componentInstance.chosenTime.focus = 5
             expect(componentInstance.setActionLabel()).toEqual('Resume')
-            let result = componentInstance.setActionOnPress()
-            expect(result).toMatchSnapshot()
-        })*/
-        test.todo('setActionOnPress')
+            expect(componentInstance.setActionOnPress().toString()).toMatchSnapshot()
+        })
+        it('setActionOnPress with "focus state" and "Start" should return startTimer', ()=>{
+            componentInstance.setState({...componentInstance.state,                 
+                timerIsActive : false,
+                timerState : 'focus',
+                timer : {...componentInstance.state.timer,
+                    focus : {...componentInstance.state.timer.focus,
+                        minutes : 5
+                    }
+                }
+            })
+            componentInstance.chosenTime.focus = 5
+            expect(componentInstance.setActionLabel()).toEqual('Start')
+            expect(componentInstance.setActionOnPress().toString()).toMatchSnapshot()
+        })
+        it('setActionOnPress with "focus state" and "Pause" should return pauseTimer', ()=>{
+            componentInstance.setState({...componentInstance.state,                 
+                timerIsActive : true,
+                timerState : 'focus',
+                timer : {...componentInstance.state.timer,
+                    focus : {...componentInstance.state.timer.focus,
+                        minutes : 3
+                    }
+                }
+            })
+            componentInstance.chosenTime.focus = 5
+            expect(componentInstance.setActionLabel()).toEqual('Pause')
+            expect(componentInstance.setActionOnPress().toString()).toMatchSnapshot()
+        })
+        it('setActionOnPress with "break state" and "Resume" should return startTimer', ()=>{
+            componentInstance.setState({...componentInstance.state,                 
+                timerIsActive : false,
+                timerState : 'break',
+                timer : {...componentInstance.state.timer,
+                    break : {...componentInstance.state.timer.break,
+                        minutes : 3
+                    }
+                }
+            })
+            componentInstance.chosenTime.break = 5
+            expect(componentInstance.setActionLabel()).toEqual('Resume')
+            expect(componentInstance.setActionOnPress().toString()).toMatchSnapshot()
+        })
+        it('setActionOnPress with "break state" and "Start" should return startTimer', ()=>{
+            componentInstance.setState({...componentInstance.state,                 
+                timerIsActive : false,
+                timerState : 'break',
+                timer : {...componentInstance.state.timer,
+                    break : {...componentInstance.state.timer.break,
+                        minutes : 5
+                    }
+                }
+            })
+            componentInstance.chosenTime.break = 5
+            expect(componentInstance.setActionLabel()).toEqual('Start')
+            expect(componentInstance.setActionOnPress().toString()).toMatchSnapshot()
+        })
+        it('setActionOnPress with "break state" and "Pause" should return pauseTimer', ()=>{
+            componentInstance.setState({...componentInstance.state,                 
+                timerIsActive : true,
+                timerState : 'break',
+                timer : {...componentInstance.state.timer,
+                    break : {...componentInstance.state.timer.break,
+                        minutes : 3
+                    }
+                }
+            })
+            componentInstance.chosenTime.break = 5
+            expect(componentInstance.setActionLabel()).toEqual('Pause')
+            expect(componentInstance.setActionOnPress().toString()).toMatchSnapshot()
+        })
+
     })
-        
 
 });

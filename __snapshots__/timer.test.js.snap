@@ -393,7 +393,67 @@ exports[`My timer  Shallow rendering 1`] = `
 </View>
 `;
 
-exports[`My timer  Styling functions setActionOnPress with "Resume" should return startTimer 1`] = `undefined`;
+exports[`My timer  Styling functions setActionOnPress with "break state" and "Pause" should return pauseTimer 1`] = `
+"function pauseTimer() {
+      this.setState({
+        timerIsActive: false
+      });
+      clearInterval(this.countDown);
+    }"
+`;
+
+exports[`My timer  Styling functions setActionOnPress with "break state" and "Resume" should return startTimer 1`] = `
+"function startTimer() {
+      if (!this.state.timerIsActive) {
+        this.setState({
+          timerIsActive: true
+        });
+        this.decrementTimer();
+      }
+    }"
+`;
+
+exports[`My timer  Styling functions setActionOnPress with "break state" and "Start" should return startTimer 1`] = `
+"function startTimer() {
+      if (!this.state.timerIsActive) {
+        this.setState({
+          timerIsActive: true
+        });
+        this.decrementTimer();
+      }
+    }"
+`;
+
+exports[`My timer  Styling functions setActionOnPress with "focus state" and "Pause" should return pauseTimer 1`] = `
+"function pauseTimer() {
+      this.setState({
+        timerIsActive: false
+      });
+      clearInterval(this.countDown);
+    }"
+`;
+
+exports[`My timer  Styling functions setActionOnPress with "focus state" and "Resume" should return startTimer 1`] = `
+"function startTimer() {
+      if (!this.state.timerIsActive) {
+        this.setState({
+          timerIsActive: true
+        });
+        this.decrementTimer();
+      }
+    }"
+`;
+
+exports[`My timer  Styling functions setActionOnPress with "focus state" and "Start" should return startTimer 1`] = `
+"function startTimer() {
+      if (!this.state.timerIsActive) {
+        this.setState({
+          timerIsActive: true
+        });
+        this.decrementTimer();
+      }
+    }"
+`;
 
 exports[`My timer  Styling functions setTimerBorderColor with focus state should return red 1`] = `
 Object {

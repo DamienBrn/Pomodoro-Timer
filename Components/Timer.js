@@ -72,7 +72,7 @@ export default class Timer extends React.Component{
                 </View>
             
                 <View style={[styles.buttons_container, styles.buttons_container_bottom]}>
-                    <TouchableOpacity title="Start" onPress={()=>this.setActionOnPress()}>
+                    <TouchableOpacity title="Start" onPress={()=>this.setActionOnPress()()}>
                         <Text style={[styles.button_format , styles.button_colors, this.isTimerOnPause()]} >{this.setActionLabel()}</Text>
                     </TouchableOpacity>
 
@@ -197,7 +197,7 @@ export default class Timer extends React.Component{
     }
 
     setActionOnPress(){
-        return this.setActionLabel() === 'Start' || this.setActionLabel() === 'Resume' ? this.startTimer() : this.pauseTimer()
+        return this.setActionLabel() === 'Start' || this.setActionLabel() === 'Resume' ? this.startTimer : this.pauseTimer
     }
 
     setActionLabel(){
