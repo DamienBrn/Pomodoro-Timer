@@ -394,63 +394,69 @@ exports[`My timer  Shallow rendering 1`] = `
 `;
 
 exports[`My timer  Styling functions setActionOnPress with "break state" and "Pause" should return pauseTimer 1`] = `
-"function pauseTimer() {
-      this.setState({
+"function () {
+      _this.setState({
         timerIsActive: false
       });
-      clearInterval(this.countDown);
+
+      clearInterval(_this.countDown);
     }"
 `;
 
 exports[`My timer  Styling functions setActionOnPress with "break state" and "Resume" should return startTimer 1`] = `
-"function startTimer() {
-      if (!this.state.timerIsActive) {
-        this.setState({
+"function () {
+      if (!_this.state.timerIsActive) {
+        _this.setState({
           timerIsActive: true
         });
-        this.decrementTimer();
+
+        _this.decrementTimer();
       }
     }"
 `;
 
 exports[`My timer  Styling functions setActionOnPress with "break state" and "Start" should return startTimer 1`] = `
-"function startTimer() {
-      if (!this.state.timerIsActive) {
-        this.setState({
+"function () {
+      if (!_this.state.timerIsActive) {
+        _this.setState({
           timerIsActive: true
         });
-        this.decrementTimer();
+
+        _this.decrementTimer();
       }
     }"
 `;
 
 exports[`My timer  Styling functions setActionOnPress with "focus state" and "Pause" should return pauseTimer 1`] = `
-"function pauseTimer() {
-      this.setState({
+"function () {
+      _this.setState({
         timerIsActive: false
       });
-      clearInterval(this.countDown);
+
+      clearInterval(_this.countDown);
     }"
 `;
 
 exports[`My timer  Styling functions setActionOnPress with "focus state" and "Resume" should return startTimer 1`] = `
-"function startTimer() {
-      if (!this.state.timerIsActive) {
-        this.setState({
+"function () {
+      if (!_this.state.timerIsActive) {
+        _this.setState({
           timerIsActive: true
         });
-        this.decrementTimer();
+
+        _this.decrementTimer();
       }
     }"
 `;
 
 exports[`My timer  Styling functions setActionOnPress with "focus state" and "Start" should return startTimer 1`] = `
-"function startTimer() {
-      if (!this.state.timerIsActive) {
-        this.setState({
+"function () {
+      if (!_this.state.timerIsActive) {
+        _this.setState({
           timerIsActive: true
         });
-        this.decrementTimer();
+
+        _this.decrementTimer();
       }
     }"
 `;
@@ -467,11 +473,13 @@ Object {
 }
 `;
 
-exports[`My timer  Styling functions setTimerStateMessage with break state should return BREAK 1`] = `"BREAK"`;
+exports[`My timer  Styling functions setTimerStateMessage with "break state" should return BREAK 1`] = `"BREAK"`;
 
-exports[`My timer  Styling functions setTimerStateMessage with focus state should return FOCUS 1`] = `"FOCUS"`;
+exports[`My timer  Styling functions setTimerStateMessage with "focus state" should return FOCUS 1`] = `"FOCUS"`;
 
-exports[`My timer  Styling functions setTimerStateMessage with timer is paused should return ... 1`] = `"..."`;
+exports[`My timer  Styling functions setTimerStateMessage with "timer is paused" and "break state" should return ... 1`] = `"..."`;
+
+exports[`My timer  Styling functions setTimerStateMessage with "timer is paused" and "focus state" should return ... 1`] = `"..."`;
 
 exports[`My timer  Styling functions setTimerStateMessageTextColor with break state should return green 1`] = `
 Object {
@@ -484,6 +492,10 @@ Object {
   "color": "#a32727",
 }
 `;
+
+exports[`My timer  Styling functions timerIsActiveOrTimeIsOrigin with "break state" and "timer is active" and "time is origin" should return true 1`] = `true`;
+
+exports[`My timer  Styling functions timerIsActiveOrTimeIsOrigin with "break state" and "timer is not active" "time is origin" should return true 1`] = `true`;
 
 exports[`My timer  Styling functions timerIsActiveOrTimeIsOrigin with "timer is active" and "time is origin" should return true 1`] = `true`;
 

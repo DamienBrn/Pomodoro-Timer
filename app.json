@@ -1,5 +1,6 @@
 {
   "expo": {
+    "entryPoint": "./app/src/App.js",
     "name": "project1",
     "slug": "project1",
     "privacy": "public",
@@ -7,7 +8,7 @@
     "platforms": [
       "ios",
       "android",
-      "web"
+      "web" 
     ],
     "version": "1.0.0",
     "orientation": "portrait",

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Text, View, TouchableOpacity, TextInput, Button} from 'react-native'
-import vibrate from '../utils/vibrate'
+import vibrate from '../../../common/vibrate'
 import {styles} from './Timer_styles'
 
 
@@ -250,7 +250,8 @@ export default class Timer extends React.Component{
 
 //*** Functional functions
 
-    startTimer(){
+    startTimer=()=>{
+        console.log(this.state)
         if(!this.state.timerIsActive){
             this.setState({timerIsActive : true})
             this.decrementTimer()
@@ -310,7 +311,7 @@ export default class Timer extends React.Component{
     }
 
 
-    pauseTimer(){
+    pauseTimer=()=>{
         this.setState({timerIsActive : false})
         clearInterval(this.countDown)
     }
@@ -333,4 +334,3 @@ export default class Timer extends React.Component{
 //*** End
 
 }
-

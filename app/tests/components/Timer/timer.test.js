@@ -1,4 +1,4 @@
-import Timer from './Components/Timer'
+import Timer from '../../../components/Timer/Timer'
 import React from 'react'
 import {shallow} from 'enzyme'
 
@@ -45,13 +45,21 @@ describe('My timer ', () => {
         })
 
 
-        it('isValueOutOfRange with 20 should return 20', ()=>{
+        it('isValueOutOfRange with "focus state" and 20 should return 20', ()=>{
             componentInstance.setState({...componentInstance.state, customTimeValue : {...componentInstance.state.customTimeValue, focus : '20'}})
             expect(componentInstance.isValueOutOfRange('focus')).toEqual(20)
         })
-        it('isValueOutOfRange with 67 should return 59', ()=>{
+        it('isValueOutOfRange with "focus state" 67 should return 59', ()=>{
             componentInstance.setState({...componentInstance.state, customTimeValue : {...componentInstance.state.customTimeValue, focus : '67'}})
             expect(componentInstance.isValueOutOfRange('focus')).toEqual(59)
+        })
+        it('isValueOutOfRange with "break state" and 20 should return 20', ()=>{
+            componentInstance.setState({...componentInstance.state, customTimeValue : {...componentInstance.state.customTimeValue, break : '20'}})
+            expect(componentInstance.isValueOutOfRange('break')).toEqual(20)
+        })
+        it('isValueOutOfRange with "break state" 67 should return 59', ()=>{
+            componentInstance.setState({...componentInstance.state, customTimeValue : {...componentInstance.state.customTimeValue, break : '67'}})
+            expect(componentInstance.isValueOutOfRange('break')).toEqual(59)
         })
 
         it('setCustomTimeValue with "focus state" and "timer is not active" and "custom time value is \'6\'" should return 6 and then null', ()=>{
@@ -65,7 +73,7 @@ describe('My timer ', () => {
             expect(componentInstance.chosenTime.focus).toEqual(6)
             expect(componentInstance.state.customTimeValue.focus).toEqual(null)
         })
-        it('setCustomTimeValue with "focus state" and "custom time value is \'.\'" should return 6 and then null', ()=>{
+        it('setCustomTimeValue with "focus state" and "timer is not active" and "custom time value is \'.\'" should return 6 and then null', ()=>{
             componentInstance.setState({...componentInstance.state,
                 timerIsActive : false,
                 customTimeValue : {...componentInstance.state.customTimeValue,
@@ -98,6 +106,28 @@ describe('My timer ', () => {
             expect(componentInstance.chosenTime.break).toEqual(6)
             expect(componentInstance.state.customTimeValue.break).toEqual(null)
         })
+        it('setCustomTimeValue with "break state" and "timer is not active" and "custom time value is \'.\'" should return 6 and then null', ()=>{
+            componentInstance.setState({...componentInstance.state,
+                timerIsActive : false,
+                customTimeValue : {...componentInstance.state.customTimeValue,
+                    break : '.'
+                }
+            })
+            componentInstance.setCustomTimeValue('break')
+            expect(componentInstance.chosenTime.break).toEqual(6)
+            expect(componentInstance.state.customTimeValue.break).toEqual(null)
+        })
+        it('setCustomTimeValue with "break state" and "timer is not active" and "custom time value is \'87\'" should return 59 and then null', ()=>{
+            componentInstance.setState({...componentInstance.state,
+                timerIsActive : false,
+                customTimeValue : {...componentInstance.state.customTimeValue,
+                    break : '87'
+                }
+            })
+            componentInstance.setCustomTimeValue('break')
+            expect(componentInstance.chosenTime.break).toEqual(59)
+            expect(componentInstance.state.customTimeValue.break).toEqual(null)
+        })
     })
     
     
@@ -112,8 +142,6 @@ describe('My timer ', () => {
 
 
     describe('Inner working', ()=>{
-
-
 
         it('changeChosenTimeDefaultOptions with "first option" should return 5 and 1', ()=>{
             componentInstance.timeOptions.firstOption.focus = 5
@@ -170,7 +198,6 @@ describe('My timer ', () => {
             expect(componentInstance.state.timerIsActive).toEqual(false)
         })
 
-//IL FAUT RESET LES TIMERS MAIS JE SAIS PAS COMMENT FAIRE AAAAAAAAAAAAAAAAAAAAAAAAA
 
        /* it('startTimer', ()=>{
             jest.useFakeTimers()
@@ -185,6 +212,7 @@ describe('My timer ', () => {
                 }
             })
             componentInstance.startTimer()
+            jest.advanceTimersByTime(1000);
             expect(componentInstance.state.timerIsActive).toEqual(true)
             jest.useRealTimers()
         })*/
@@ -209,24 +237,44 @@ describe('My timer ', () => {
             expect(componentInstance.state.timer.focus.seconds).toEqual(59);
             jest.useRealTimers();
         })
-
-      /*  it('decrementTimer in "focus state" after 1 minute should return 4:00', ()=>{
+      /*  it('decrementTimer in "focus state" after 5 seconds should return 4:55', ()=>{
+            
             jest.useFakeTimers();
-            componentInstance.setState({...componentInstance.state, timer : {
-                focus : {
-                    minutes : 5,
-                    seconds : 0
-                }
-            },
-            timerState  :'focus'})
+            componentInstance.setState({...componentInstance.state,     
+                timer : {...componentInstance.state.timer,
+                    focus : {...componentInstance.state.timer.focus,
+                        minutes : 5,
+                        seconds : 0
+                    }
+                },
+                timerState  :'focus'
+            })
             expect(componentInstance.state.timer.focus.minutes).toEqual(5);
             expect(componentInstance.state.timer.focus.seconds).toEqual(0);
             componentInstance.decrementTimer();
-            jest.advanceTimersByTime(1000);
+            jest.advanceTimersByTime(5000);
             expect(componentInstance.state.timer.focus.minutes).toEqual(4);
-            expect(componentInstance.state.timer.focus.seconds).toEqual(59);
+            expect(componentInstance.state.timer.focus.seconds).toEqual(55);
             jest.useRealTimers();
         })*/
+        it('decrementTimer in "break state" after 1 second should return 4:59', ()=>{
+            jest.useFakeTimers();
+            componentInstance.setState({...componentInstance.state, 
+                timer : {...componentInstance.state.timer,
+                    break : {...componentInstance.state.timer.break,
+                        minutes : 5,
+                        seconds : 0
+                    }
+            },
+            timerState  :'break'})
+            expect(componentInstance.state.timer.break.minutes).toEqual(5);
+            expect(componentInstance.state.timer.break.seconds).toEqual(0);
+            componentInstance.decrementTimer();
+            jest.advanceTimersByTime(1000);
+            expect(componentInstance.state.timer.break.minutes).toEqual(4);
+            expect(componentInstance.state.timer.break.seconds).toEqual(59);
+            jest.useRealTimers();
+        })
     
         test.todo('checkIfTimerHasEnded')
 
@@ -244,16 +292,16 @@ describe('My timer ', () => {
         })
         it('resetTimer with "focus state" and (5, 0) should return (5, 0)', ()=>{
             componentInstance.setState({...componentInstance.state, timerState : 'focus'})
-            componentInstance.chosenTime.focus = 5
+            componentInstance.chosenTime.focus = 1
             componentInstance.resetTimer()
-            expect(componentInstance.state.timer.focus.minutes).toEqual(5)
+            expect(componentInstance.state.timer.focus.minutes).toEqual(1)
             expect(componentInstance.state.timer.focus.seconds).toEqual(0)
         })
         it('resetTimer with "break state" and (5, 0) should return (5, 0)', ()=>{
             componentInstance.setState({...componentInstance.state, timerState : 'break'})
-            componentInstance.chosenTime.break = 5
+            componentInstance.chosenTime.break = 1
             componentInstance.resetTimer()
-            expect(componentInstance.state.timer.break.minutes).toEqual(5)
+            expect(componentInstance.state.timer.break.minutes).toEqual(1)
             expect(componentInstance.state.timer.break.seconds).toEqual(0)
         })
     })
@@ -267,30 +315,26 @@ describe('My timer ', () => {
             componentInstance.setState({...componentInstance.state, timerIsActive : true, timerState : 'focus'})
             expect(componentInstance.setTimerBorderColor()).toMatchSnapshot()
         })
-
-
         it('setTimerBorderColor with break state should return green', ()=>{
             componentInstance.setState({...componentInstance.state,
-                timer : { ...componentInstance.state.timer,
-                    break : {...componentInstance.state.timer.break,
-                        minutes : 5,
-                        seconds : 0
-                    }
-                },
                 timerIsActive : true , timerState : 'break'})
             expect(componentInstance.setTimerBorderColor()).toEqual({borderColor : '#41b31e'})
         })
 
      
-        it('setTimerStateMessage with timer is paused should return ...', ()=>{
+        it('setTimerStateMessage with "timer is paused" and "focus state" should return ...', ()=>{
             componentInstance.setState({...componentInstance.state, timerIsActive : false, timerState : 'focus'})
             expect(componentInstance.setTimerStateMessage()).toMatchSnapshot()
         })
-        it('setTimerStateMessage with focus state should return FOCUS', ()=>{
+        it('setTimerStateMessage with "timer is paused" and "break state" should return ...', ()=>{
+            componentInstance.setState({...componentInstance.state, timerIsActive : false, timerState : 'break'})
+            expect(componentInstance.setTimerStateMessage()).toMatchSnapshot()
+        })
+        it('setTimerStateMessage with "focus state" should return FOCUS', ()=>{
             componentInstance.setState({...componentInstance.state, timerIsActive : true, timerState : 'focus'})
             expect(componentInstance.setTimerStateMessage()).toMatchSnapshot()
         })
-        it('setTimerStateMessage with break state should return BREAK', ()=>{
+        it('setTimerStateMessage with "break state" should return BREAK', ()=>{
             componentInstance.setState({...componentInstance.state, timerIsActive : true, timerState : 'break'})
             expect(componentInstance.setTimerStateMessage()).toMatchSnapshot()
         })
@@ -311,11 +355,6 @@ describe('My timer ', () => {
         it('timerIsActiveOrTimeIsOrigin with "timer is not active" "time is origin" should return true', ()=>{
             componentInstance.setState({...componentInstance.state, timerIsActive : false,
                 timerState : 'focus',
-                timer : { ...componentInstance.state.timer,
-                    focus : { ...componentInstance.state.timer.focus,
-                        minutes : 5
-                    }
-                }
             })
             componentInstance.chosenTime.focus = 5
             expect(componentInstance.timerIsActiveOrTimeIsOrigin()).toMatchSnapshot()
@@ -345,9 +384,58 @@ describe('My timer ', () => {
             componentInstance.chosenTime.focus = 5
             expect(componentInstance.timerIsActiveOrTimeIsOrigin()).toEqual(false)
         })
+        it('timerIsActiveOrTimeIsOrigin with "break state" and "timer is active" and "time is origin" should return true', ()=>{
+            componentInstance.setState({...componentInstance.state, timerIsActive : true,
+                timerState : 'break',
+                timer : {...componentInstance.state.timer,
+                    break : {...componentInstance.state.timer.break,
+                        minutes : 3
+                    }
+                }
+            })
+            componentInstance.chosenTime.break = 3
+            expect(componentInstance.timerIsActiveOrTimeIsOrigin()).toMatchSnapshot()
+        })
+        it('timerIsActiveOrTimeIsOrigin with "break state" and "timer is not active" "time is origin" should return true', ()=>{
+            componentInstance.setState({...componentInstance.state, timerIsActive : false,
+                timerState : 'break',
+                timer : {...componentInstance.state.timer,
+                    break : {...componentInstance.state.timer.break,
+                        minutes : 3
+                    }
+                }
+            })
+            componentInstance.chosenTime.break = 3
+            expect(componentInstance.timerIsActiveOrTimeIsOrigin()).toMatchSnapshot()
+        })
+        it('timerIsActiveOrTimeIsOrigin with "break state" "timer is active" "time is not origin" should return false', ()=>{
+            componentInstance.setState({...componentInstance.state, timerIsActive : true,
+                timerState : 'break',
+                timer : { ...componentInstance.state.timer,
+                    break : { ...componentInstance.state.timer.break,
+                        minutes : 3
+                    }
+                }
+            })
+            componentInstance.chosenTime.break = 5
+            expect(componentInstance.timerIsActiveOrTimeIsOrigin()).toEqual(true)
+        })
+        it('timerIsActiveOrTimeIsOrigin with "break state" and "timer is not active" "time is not origin" should return false', ()=>{
+            componentInstance.setState({...componentInstance.state, 
+                timerIsActive : false,
+                timerState : 'break',
+                timer : { ...componentInstance.state.timer,
+                    break : {...componentInstance.state.timer.break,
+                        minutes : 3
+                    }
+                }
+            })
+            componentInstance.chosenTime.break = 5
+            expect(componentInstance.timerIsActiveOrTimeIsOrigin()).toEqual(false)
+        })
 
-        it('setActionLabel with "timer is active" should return "Pause"', ()=>{
-            componentInstance.setState({...componentInstance.state, timerIsActive : true})
+        it('setActionLabel with "focus state" "timer is active" should return "Pause"', ()=>{
+            componentInstance.setState({...componentInstance.state, timerIsActive : true, timerState : 'focus'})
             expect(componentInstance.setActionLabel()).toEqual('Pause')
         })
         it('setActionLabel with "focus state" and "timer is not active" and "timer has already decremented" should return "Resume"', ()=>{
@@ -376,7 +464,36 @@ describe('My timer ', () => {
             componentInstance.chosenTime.focus = 5
             expect(componentInstance.setActionLabel()).toEqual('Start')
         })
-
+        it('setActionLabel with "break state" "timer is active" should return "Pause"', ()=>{
+            componentInstance.setState({...componentInstance.state, timerIsActive : true, timerState : 'break'})
+            expect(componentInstance.setActionLabel()).toEqual('Pause')
+        })
+        it('setActionLabel with "break state" and "timer is not active" and "timer has already decremented" should return "Resume"', ()=>{
+            componentInstance.setState({...componentInstance.state,                 
+                timerIsActive : false,
+                timerState : 'break',
+                timer : {...componentInstance.state.timer,
+                    break : {...componentInstance.state.timer.break,
+                        minutes : 3
+                    }
+                }
+            })
+            componentInstance.chosenTime.break = 5
+            expect(componentInstance.setActionLabel()).toEqual('Resume')
+        })
+        it('setActionLabel with "break state" and "timer is not active" and "timer has not decremented" should return "Start"', ()=>{
+            componentInstance.setState({...componentInstance.state,                 
+                timerIsActive : false,
+                timerState : 'break',
+                timer : {...componentInstance.state.timer,
+                    break : {...componentInstance.state.timer.break,
+                        minutes : 5
+                    }
+                }
+            })
+            componentInstance.chosenTime.break = 5
+            expect(componentInstance.setActionLabel()).toEqual('Start')
+        })
 
         it('isResetButtonDisabled with "timer is active" and "time is origin" should return styles.disabled_button', ()=>{
             componentInstance.setState({...componentInstance.state, 
