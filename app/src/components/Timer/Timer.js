@@ -251,7 +251,6 @@ export default class Timer extends React.Component{
 //*** Functional functions
 
     startTimer=()=>{
-        console.log(this.state)
         if(!this.state.timerIsActive){
             this.setState({timerIsActive : true})
             this.decrementTimer()

@@ -1,4 +1,4 @@
-import Timer from '../../../components/Timer/Timer'
+import Timer from '../../../src/components/Timer/Timer'
 import React from 'react'
 import {shallow} from 'enzyme'
 
