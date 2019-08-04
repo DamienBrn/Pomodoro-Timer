@@ -1,6 +1,6 @@
 import React from 'react'
 import {Text, View, TouchableOpacity, TextInput, Button} from 'react-native'
-import vibrate from '../../../common/vibrate'
+import vibrate from '@common/vibrate'
 import {styles} from './Timer_styles'
 
 
